@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.p2nn.meteor.mapper.SysRoleMenuMapper">
+
+    <select id="listByRoleId" resultType="cn.p2nn.meteor.entity.SysMenu">
+        SELECT sm.*
+        FROM sys_menu sm
+                 LEFT JOIN sys_role_menu srm ON sm.id = srm.menu_id
+        WHERE srm.role_id = #{roleId}
+    </select>
+
+</mapper>
