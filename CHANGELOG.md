@@ -1,14 +1,30 @@
-# Changelog
+# 更新日志
+---
 
+## 2023-07-21 @v1.0.2
 
-## v1.0.0
+### 🚀 修复
 
-### 🚀 Enhancements
+*
 
-- Add useMessage && useModal && useNotifaction replace message && modal && notifaction (d0c031a)
-- Replace request config (4be8824)
+### 🩹 修复
 
-### 🩹 Fixes
+*
 
-- Typo (14c93ef)
-- Typo (ca14d96)
+---
+
+## 2023-07-20 @v1.0.1
+
+### 🚀 新增
+
+* 
+
+### 🩹 修复
+
+* 
+
+---
+
+## 2023-07-19 @v1.0.0
+
+* __【重要】__ 第一个版本正式上线
