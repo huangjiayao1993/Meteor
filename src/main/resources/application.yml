@@ -30,7 +30,15 @@ mybatis-plus:
       # 全局逻辑删除的实体字段名
       logic-delete-field: deleted
 
+# 系统配置
 meteor:
+  # 默认密码
   default-password: 123456
+  # 云存储类型
   oss:
     type: huawei
+  # 认证相关
+  auth:
+    # 忽略的URL
+    ignore-url:
+      - /auth/login

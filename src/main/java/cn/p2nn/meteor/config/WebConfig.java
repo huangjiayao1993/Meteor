@@ -1,52 +1,67 @@
 package cn.p2nn.meteor.config;
 
-import java.util.List;
-
+import cn.dev33.satoken.context.SaHolder;
+import cn.dev33.satoken.filter.SaServletFilter;
+import cn.dev33.satoken.router.SaHttpMethod;
+import cn.dev33.satoken.router.SaRouter;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.json.JSONUtil;
+import cn.p2nn.meteor.enums.ResultEnum;
+import cn.p2nn.meteor.model.Result;
+import cn.p2nn.meteor.resolver.PageArgumentResolver;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import cn.dev33.satoken.interceptor.SaInterceptor;
-import cn.dev33.satoken.stp.StpUtil;
-import cn.p2nn.meteor.resolver.PageArgumentResolver;
+import java.util.List;
 
+@Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验。
-        registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin()))
-                // 拦截path
-//                .addPathPatterns("/**")
-                // 排除path
-//                .excludePathPatterns("/auth/login");
-                .excludePathPatterns("/**");
+    private final MeteorAuthConfig meteorAuthConfig;
+
+    /**
+     * 注册 [Sa-Token 全局过滤器]
+     */
+    @Bean
+    public SaServletFilter getSaServletFilter() {
+        return new SaServletFilter()
+                // 指定 [拦截路由]
+                .addInclude("/**")
+                // 前置函数：在每次认证函数之前执行
+                .setBeforeAuth(obj -> {
+                    SaHolder.getResponse()
+                            // ---------- 设置跨域响应头 ----------
+                            // 允许指定域访问跨域资源
+                            .setHeader("Access-Control-Allow-Origin", SaHolder.getRequest().getHeader("Origin"))
+                            // 允许所有请求方式
+                            .setHeader("Access-Control-Allow-Methods", "*")
+                            // 允许的header参数
+                            .setHeader("Access-Control-Allow-Headers", "AUTHORIZATION,CONTENT-TYPE")
+                            // 允许凭证
+                            .setHeader("Access-Control-Allow-Credentials", "true")
+                            // 有效时间
+                            .setHeader("Access-Control-Max-Age", "3600")
+                    ;
+                    // 如果是预检请求，则立即返回到前端
+                    SaRouter.match(SaHttpMethod.OPTIONS).back();
+                })
+                // 认证函数: 每次请求执行
+                .setAuth(obj -> {
+                    SaRouter.notMatch(this.meteorAuthConfig.getIgnoreUrl()).check(() -> StpUtil.checkLogin());
+                })
+                // 认证异常后
+                .setError(e -> JSONUtil.toJsonStr(Result.failed(ResultEnum.AUTH_FAILED)));
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new PageArgumentResolver());
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry)
-    {
-        registry
-                // 设置允许跨域的路径
-                .addMapping("/**")
-                // 设置允许跨域请求的域名
-                .allowedOriginPatterns("*")
-                // 是否允许证书
-                .allowCredentials(Boolean.TRUE)
-                // 设置允许的方法
-                .allowedMethods("GET", "POST", "DELETE", "PUT")
-                // 设置允许的header属性
-                .allowedHeaders("*")
-                // 跨域允许时间
-                .maxAge(3600);
     }
 
 }

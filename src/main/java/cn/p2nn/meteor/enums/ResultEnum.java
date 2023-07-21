@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum ResultEnum {
 
     SUCCESS(0, "成功"),
-    FAIL(-100000, "失败"),
+    FAILED(-100000, "失败"),
+    AUTH_FAILED(-100001, "Token认证异常"),
 
     USER_NOT_FOUND(-200000, "用户不存在"),
     USERNAME_PASSWORD_ERROR(-200001, "用户名或密码错误"),
