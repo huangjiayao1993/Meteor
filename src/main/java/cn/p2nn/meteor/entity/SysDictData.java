@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -25,18 +26,21 @@ public class SysDictData implements Serializable {
     /**
      * 字典类型
      */
+    @NotBlank
     @TableField("`type`")
     private String type;
 
     /**
      * 字典数据名称
      */
+    @NotBlank
     @TableField("`name`")
     private String name;
 
     /**
      * 字典数据值
      */
+    @NotBlank
     @TableField("`value`")
     private String value;
 

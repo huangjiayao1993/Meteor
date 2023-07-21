@@ -47,7 +47,7 @@ public class SysOrg implements Serializable {
     private String label;
 
     /**
-     * 组织类型
+     * 组织类型,0:部门，1:公司
      */
     @TableField("`type`")
     private Integer type;

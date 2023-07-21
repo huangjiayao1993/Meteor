@@ -21,7 +21,13 @@ public class SysRoleMenu implements Serializable {
     @TableId
     private String id;
 
+    /**
+     * 角色ID
+     */
     private String roleId;
 
+    /**
+     * 菜单ID
+     */
     private String menuId;
 }

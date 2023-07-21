@@ -64,14 +64,12 @@ public class BaseEntity implements Serializable {
 	/**
 	 * 开始时间
 	 */
-	@JsonIgnore
 	@TableField(exist = false)
 	protected String beginTime;
 
 	/**
 	 * 结束时间
 	 */
-	@JsonIgnore
 	@TableField(exist = false)
 	protected String endTime;
 
