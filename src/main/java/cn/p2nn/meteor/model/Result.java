@@ -25,11 +25,11 @@ public class Result<T> {
     }
 
     public static <T> Result failed() {
-        return new Result<T>(ResultEnum.FAIL.getCode(), ResultEnum.FAIL.getMsg(), null);
+        return new Result<T>(ResultEnum.FAILED.getCode(), ResultEnum.FAILED.getMsg(), null);
     }
 
     public static <T> Result failed(String msg) {
-        return new Result<T>(ResultEnum.FAIL.getCode(), msg, null);
+        return new Result<T>(ResultEnum.FAILED.getCode(), msg, null);
     }
 
     public static <T> Result failed(ResultEnum e) {

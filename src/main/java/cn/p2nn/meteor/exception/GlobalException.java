@@ -28,7 +28,7 @@ public class GlobalException {
     @ExceptionHandler(Exception.class)
     public Result handlerException(Exception e) {
         log.error(e.getMessage(), e);
-        return Result.failed(ResultEnum.FAIL);
+        return Result.failed(ResultEnum.FAILED);
     }
 
     /**
