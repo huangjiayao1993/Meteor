@@ -45,7 +45,7 @@ public class UserWeb extends BaseWeb {
      * @param user
      * @return
      */
-    @SaCheckPermission("system:user:list")
+    @SaCheckPermission("sys:user:list")
     @GetMapping("page")
     public Result page(Page page, SysUser user) {
         PageResult result = this.userService.page(page, user);
@@ -58,7 +58,7 @@ public class UserWeb extends BaseWeb {
      * @param user
      * @return
      */
-    @SaCheckPermission("system:user:create")
+    @SaCheckPermission("sys:user:create")
     @PostMapping("create")
     public Result create(@RequestBody SysUser user) {
         this.userService.create(user);
@@ -71,7 +71,7 @@ public class UserWeb extends BaseWeb {
      * @param user
      * @return
      */
-    @SaCheckPermission("system:user:update")
+    @SaCheckPermission("sys:user:update")
     @PutMapping("update")
     public Result update(@RequestBody SysUser user) {
         this.userService.update(user);
@@ -84,7 +84,7 @@ public class UserWeb extends BaseWeb {
      * @param dto
      * @return
      */
-    @SaCheckPermission("system:user:remove")
+    @SaCheckPermission("sys:user:remove")
     @DeleteMapping("remove")
     public Result remove(@RequestBody @Valid IdsDto dto) {
         this.userService.remove(dto.getIds());
@@ -97,7 +97,7 @@ public class UserWeb extends BaseWeb {
      * @param dto
      * @return
      */
-    @SaCheckPermission("system:user:authorize")
+    @SaCheckPermission("sys:user:authorize")
     @PostMapping("authorize")
     public Result authorize(@RequestBody @Valid AuthorizeDto dto) {
         this.userRoleService.authorize(dto);
@@ -110,7 +110,7 @@ public class UserWeb extends BaseWeb {
      * @param dto
      * @return
      */
-    @SaCheckPermission("system:user:resetPassword")
+    @SaCheckPermission("sys:user:resetPassword")
     @PutMapping("reset/password")
     public Result resetPassword(@RequestBody @Valid IdsDto dto) {
         this.userService.resetPassword(dto.getIds());
@@ -123,7 +123,7 @@ public class UserWeb extends BaseWeb {
      * @param user
      * @return
      */
-    @SaCheckPermission("system:user:changePassword")
+    @SaCheckPermission("sys:user:changePassword")
     @PutMapping("change/password")
     public Result changePassword(@RequestBody SysUser user) {
         this.userService.changePassword(user.getId(), user.getPassword(), user.getNewPassword());
@@ -136,7 +136,7 @@ public class UserWeb extends BaseWeb {
      * @param user
      * @return
      */
-    @SaCheckPermission("system:user:changeStatus")
+    @SaCheckPermission("sys:user:changeStatus")
     @PutMapping("change/status")
     public Result changeStatus(@RequestBody SysUser user) {
         this.userService.updateById(user);

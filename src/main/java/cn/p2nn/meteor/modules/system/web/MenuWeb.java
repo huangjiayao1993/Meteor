@@ -67,7 +67,7 @@ public class MenuWeb extends BaseWeb {
      * @param menu
      * @return
      */
-    @SaCheckPermission("system:menu:create")
+    @SaCheckPermission("sys:menu:create")
     @PostMapping("create")
     public Result create(@RequestBody SysMenu menu) {
         this.menuService.save(menu);
@@ -80,7 +80,7 @@ public class MenuWeb extends BaseWeb {
      * @param menu
      * @return
      */
-    @SaCheckPermission("system:menu:update")
+    @SaCheckPermission("sys:menu:update")
     @PutMapping("update")
     public Result update(@RequestBody SysMenu menu) {
         this.menuService.updateById(menu);
@@ -93,7 +93,7 @@ public class MenuWeb extends BaseWeb {
      * @param dto
      * @return
      */
-    @SaCheckPermission("system:menu:remove")
+    @SaCheckPermission("sys:menu:remove")
     @DeleteMapping("remove")
     public Result remove(@RequestBody @Valid IdsDto dto) {
         this.menuService.remove(dto.getIds());

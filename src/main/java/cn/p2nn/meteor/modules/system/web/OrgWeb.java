@@ -55,7 +55,7 @@ public class OrgWeb extends BaseWeb {
      * @param org
      * @return
      */
-    @SaCheckPermission("system:org:list")
+    @SaCheckPermission("sys:org:list")
     @GetMapping("page")
     public Result page(Page page, SysOrg org) {
         PageResult result = this.orgService.page(page, org);
@@ -68,7 +68,7 @@ public class OrgWeb extends BaseWeb {
      * @param org
      * @return
      */
-    @SaCheckPermission("system:org:create")
+    @SaCheckPermission("sys:org:create")
     @PostMapping("create")
     public Result create(@RequestBody SysOrg org) {
         this.orgService.save(org);
@@ -81,7 +81,7 @@ public class OrgWeb extends BaseWeb {
      * @param org
      * @return
      */
-    @SaCheckPermission("system:org:update")
+    @SaCheckPermission("sys:org:update")
     @PutMapping("update")
     public Result update(@RequestBody SysOrg org) {
         this.orgService.updateById(org);
@@ -94,7 +94,7 @@ public class OrgWeb extends BaseWeb {
      * @param dto
      * @return
      */
-    @SaCheckPermission("system:org:remove")
+    @SaCheckPermission("sys:org:remove")
     @DeleteMapping("remove")
     public Result remove(@RequestBody @Valid IdsDto dto) {
         this.orgService.removeBatchByIds(dto.getIds());

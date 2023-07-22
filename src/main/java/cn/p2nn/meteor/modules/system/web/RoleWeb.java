@@ -51,7 +51,7 @@ public class RoleWeb extends BaseWeb {
      * @param role
      * @return
      */
-    @SaCheckPermission("system:role:list")
+    @SaCheckPermission("sys:role:list")
     @GetMapping("page")
     public Result page(Page page, SysRole role) {
         page = this.roleService.page(page);
@@ -76,7 +76,7 @@ public class RoleWeb extends BaseWeb {
      * @param role
      * @return
      */
-    @SaCheckPermission("system:role:create")
+    @SaCheckPermission("sys:role:create")
     @PostMapping("create")
     public Result create(@RequestBody SysRole role) {
         this.roleService.create(role);
@@ -89,7 +89,7 @@ public class RoleWeb extends BaseWeb {
      * @param role
      * @return
      */
-    @SaCheckPermission("system:role:update")
+    @SaCheckPermission("sys:role:update")
     @PutMapping("update")
     public Result update(@RequestBody SysRole role) {
         this.roleService.update(role);
@@ -102,7 +102,7 @@ public class RoleWeb extends BaseWeb {
      * @param dto
      * @return
      */
-    @SaCheckPermission("system:role:remove")
+    @SaCheckPermission("sys:role:remove")
     @DeleteMapping("remove")
     public Result remove(@RequestBody @Valid IdsDto dto) {
         this.roleService.remove(dto.getIds());
@@ -127,7 +127,7 @@ public class RoleWeb extends BaseWeb {
      * @param dto
      * @return
      */
-    @SaCheckPermission("system:role:authorize")
+    @SaCheckPermission("sys:role:authorize")
     @PostMapping("authorize")
     public Result authorize(@RequestBody @Valid AuthorizeDto dto) {
         this.roleMenuService.authorize(dto);

@@ -39,8 +39,8 @@ public class WebConfig implements WebMvcConfigurer {
                             // ---------- 设置跨域响应头 ----------
                             // 允许指定域访问跨域资源
                             .setHeader("Access-Control-Allow-Origin", SaHolder.getRequest().getHeader("Origin"))
-                            // 允许所有请求方式
-                            .setHeader("Access-Control-Allow-Methods", "*")
+                            // 允许的请求方式
+                            .setHeader("Access-Control-Allow-Methods", "PUT,DELETE,POST,GET")
                             // 允许的header参数
                             .setHeader("Access-Control-Allow-Headers", "AUTHORIZATION,CONTENT-TYPE")
                             // 允许凭证

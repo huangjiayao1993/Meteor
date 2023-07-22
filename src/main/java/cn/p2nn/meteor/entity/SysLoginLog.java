@@ -56,4 +56,8 @@ public class SysLoginLog implements Serializable {
      */
     private String responseJson;
 
+    /**
+     * 异常原因
+     */
+    private String reason;
 }

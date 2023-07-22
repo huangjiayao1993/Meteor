@@ -10,9 +10,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
+import cn.hutool.json.JSONUtil;
 import cn.p2nn.meteor.dto.LoginDto;
+import cn.p2nn.meteor.entity.SysLoginLog;
 import cn.p2nn.meteor.entity.SysUser;
 import cn.p2nn.meteor.model.Result;
+import cn.p2nn.meteor.service.SysLoginLogService;
 import cn.p2nn.meteor.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginAspect {
 
     private final SysUserService userService;
+
+    private final SysLoginLogService loginLogService;
 
     /**
      * 登录正常返回
@@ -53,12 +58,18 @@ public class LoginAspect {
      */
     @Around("execution(* cn.p2nn.meteor.web.AuthWeb.login(..))")
     public Object loginAround(ProceedingJoinPoint point) throws Throwable {
+        SysLoginLog log = new SysLoginLog();
         LoginDto dto = (LoginDto) point.getArgs()[0];
-        Object proceed;
+        log.setUsername(dto.getUsername()).setLoginType(dto.getLoginType()).setCreateTime(LocalDateTime.now());
+        Result proceed;
         try {
-            proceed = point.proceed();
+            proceed = (Result) point.proceed();
+            log.setSuccess(proceed.isSuccess()).setResponseJson(JSONUtil.toJsonStr(proceed));
         } catch (Exception e) {
+            log.setReason(e.getMessage());
             throw e;
+        } finally {
+            this.loginLogService.save(log);
         }
         return proceed;
     }
