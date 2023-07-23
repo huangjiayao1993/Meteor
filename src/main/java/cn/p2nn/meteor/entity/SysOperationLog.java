@@ -56,7 +56,7 @@ public class SysOperationLog implements Serializable {
     /**
      * 请求数据json
      */
-    private String requestJson;
+    private String paramsJson;
 
     /**
      * 请求时间
@@ -76,6 +76,11 @@ public class SysOperationLog implements Serializable {
     /**
      * 时长,单位秒
      */
-    private Integer duration;
+    private long duration;
+
+    /**
+     * 异常原因
+     */
+    private String reason;
 
 }

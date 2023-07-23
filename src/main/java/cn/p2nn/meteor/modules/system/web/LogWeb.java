@@ -37,7 +37,7 @@ public class LogWeb extends BaseWeb {
      * @param log
      * @return
      */
-    @SaCheckPermission("sys:log:login:list")
+    @SaCheckPermission("log:login:list")
     @GetMapping("login/page")
     public Result loginPage(Page page, SysLoginLog log) {
         PageResult result = PageResult.parse(this.loginLogService.page(page));
@@ -51,7 +51,7 @@ public class LogWeb extends BaseWeb {
      * @param log
      * @return
      */
-    @SaCheckPermission("sys:log:operation:list")
+    @SaCheckPermission("log:operation:list")
     @GetMapping("operation/page")
     public Result operationPage(Page page, SysOperationLog log) {
         PageResult result = PageResult.parse(this.operationLogService.page(page));

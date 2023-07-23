@@ -58,18 +58,18 @@ public class LoginAspect {
      */
     @Around("execution(* cn.p2nn.meteor.web.AuthWeb.login(..))")
     public Object loginAround(ProceedingJoinPoint point) throws Throwable {
-        SysLoginLog log = new SysLoginLog();
+        SysLoginLog entity = new SysLoginLog();
         LoginDto dto = (LoginDto) point.getArgs()[0];
-        log.setUsername(dto.getUsername()).setLoginType(dto.getLoginType()).setCreateTime(LocalDateTime.now());
+        entity.setUsername(dto.getUsername()).setLoginType(dto.getLoginType()).setCreateTime(LocalDateTime.now());
         Result proceed;
         try {
             proceed = (Result) point.proceed();
-            log.setSuccess(proceed.isSuccess()).setResponseJson(JSONUtil.toJsonStr(proceed));
+            entity.setSuccess(proceed.isSuccess()).setResponseJson(JSONUtil.toJsonStr(proceed));
         } catch (Exception e) {
-            log.setReason(e.getMessage());
+            entity.setReason(e.getMessage());
             throw e;
         } finally {
-            this.loginLogService.save(log);
+            this.loginLogService.save(entity);
         }
         return proceed;
     }
