@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -52,7 +53,10 @@ public class OperationAspect {
             HandlerMethod handler = (HandlerMethod) (SpringUtil.getBean(RequestMappingHandlerMapping.class)).getHandler(request).getHandler();
             JSONObject data = new JSONObject();
             data.putAll(request.getParameterMap());
-            Arrays.stream(point.getArgs()).forEach(item -> data.putAll(new JSONObject(item)));
+            String method = request.getMethod();
+            if (!HttpMethod.GET.matches(method)) {
+                Arrays.stream(point.getArgs()).forEach(item -> data.putAll(new JSONObject(item)));
+            }
             entity.setController(handler.getBean().getClass().getName())
                     .setMethod(handler.getMethod().getName())
                     .setParamsJson(JSONUtil.toJsonStr(data))
@@ -62,6 +66,7 @@ public class OperationAspect {
             entity.setSuccess(proceed.isSuccess()).setResponseJson(JSONUtil.toJsonStr(proceed));
         } catch (Exception e) {
             entity.setReason(e.getMessage());
+            e.printStackTrace();
             throw e;
         } finally {
             if (StpUtil.isLogin()) {

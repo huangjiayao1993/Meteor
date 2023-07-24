@@ -7,7 +7,7 @@
         FROM sys_menu sm
                  LEFT JOIN sys_role_menu srm ON sm.id = srm.menu_id
                  LEFT JOIN sys_user_role sur ON srm.role_id = sur.role_id
-        WHERE sur.user_id = #{userId}
+        WHERE sur.user_id = #{userId} order by sm.sort,sm.id asc
     </select>
 
 </mapper>

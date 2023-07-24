@@ -60,6 +60,7 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu> {
         }
         qw.in(!inIds.isEmpty(), SysMenu::getId, inIds);
         qw.notIn(ObjectUtil.isNotNull(excludeTypes), SysMenu::getType, excludeTypes);
+        qw.orderByAsc(SysMenu::getSort).orderByAsc(SysMenu::getId);
         //查询条件
         List<SysMenu> list = this.list(qw);
         for (SysMenu item : list) {
