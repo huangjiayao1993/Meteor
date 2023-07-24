@@ -40,7 +40,7 @@ public class LogWeb extends BaseWeb {
     @SaCheckPermission("log:login:list")
     @GetMapping("login/page")
     public Result loginPage(Page page, SysLoginLog log) {
-        PageResult result = PageResult.parse(this.loginLogService.page(page));
+        PageResult result = this.loginLogService.page(page, log);
         return Result.success(result);
     }
 
@@ -54,7 +54,7 @@ public class LogWeb extends BaseWeb {
     @SaCheckPermission("log:operation:list")
     @GetMapping("operation/page")
     public Result operationPage(Page page, SysOperationLog log) {
-        PageResult result = PageResult.parse(this.operationLogService.page(page));
+        PageResult result = this.operationLogService.page(page, log);
         return Result.success(result);
     }
 

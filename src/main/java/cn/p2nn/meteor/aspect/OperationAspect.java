@@ -49,8 +49,7 @@ public class OperationAspect {
         Result proceed;
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            RequestMappingHandlerMapping bean = SpringUtil.getBean(RequestMappingHandlerMapping.class);
-            HandlerMethod handler = (HandlerMethod) bean.getHandler(request).getHandler();
+            HandlerMethod handler = (HandlerMethod) (SpringUtil.getBean(RequestMappingHandlerMapping.class)).getHandler(request).getHandler();
             JSONObject data = new JSONObject();
             data.putAll(request.getParameterMap());
             Arrays.stream(point.getArgs()).forEach(item -> data.putAll(new JSONObject(item)));
@@ -68,8 +67,7 @@ public class OperationAspect {
             if (StpUtil.isLogin()) {
                 entity.setUserId(StpUtil.getLoginId().toString());
             }
-            long end = DateUtil.currentSeconds();
-            entity.setDuration(end - start);
+            entity.setDuration(DateUtil.currentSeconds() - start);
             this.operationLogService.save(entity);
         }
         return proceed;

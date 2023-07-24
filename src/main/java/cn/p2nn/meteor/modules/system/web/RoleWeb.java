@@ -1,18 +1,5 @@
 package cn.p2nn.meteor.modules.system.web;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.p2nn.meteor.dto.AuthorizeDto;
 import cn.p2nn.meteor.dto.IdsDto;
@@ -23,9 +10,13 @@ import cn.p2nn.meteor.service.SysRoleMenuService;
 import cn.p2nn.meteor.service.SysRoleService;
 import cn.p2nn.meteor.service.SysUserRoleService;
 import cn.p2nn.meteor.web.BaseWeb;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 系统角色控制器
@@ -54,8 +45,8 @@ public class RoleWeb extends BaseWeb {
     @SaCheckPermission("sys:role:list")
     @GetMapping("page")
     public Result page(Page page, SysRole role) {
-        page = this.roleService.page(page);
-        return Result.success(PageResult.parse(page));
+        PageResult result = this.roleService.page(page, role);
+        return Result.success(result);
     }
 
     /**
@@ -66,7 +57,7 @@ public class RoleWeb extends BaseWeb {
      */
     @GetMapping("list")
     public Result list(SysRole role) {
-        List<SysRole> list = this.roleService.list();
+        List<SysRole> list = this.roleService.list(role);
         return Result.success(list);
     }
 

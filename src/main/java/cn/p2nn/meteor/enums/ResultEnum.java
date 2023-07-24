@@ -28,6 +28,12 @@ public enum ResultEnum {
     NICKNAME_EXISTS(-200014, "昵称已存在"),
     ROLE_CODE_EXISTS(-200015, "角色标识已存在"),
 
+
+
+    DICT_TYPE_EXISTS(-510001, "字段类型已存在"),
+    DICT_DATA_NAME_EXISTS(-510002, "字典数据名称已存在"),
+    DICT_DATA_VALUE_EXISTS(-510003, "字段数据值已存在"),
+
     ;
 
     private int code;

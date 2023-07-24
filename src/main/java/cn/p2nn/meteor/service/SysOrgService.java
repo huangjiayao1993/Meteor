@@ -1,19 +1,17 @@
 package cn.p2nn.meteor.service;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-
+import cn.p2nn.meteor.entity.SysOrg;
+import cn.p2nn.meteor.mapper.SysOrgMapper;
+import cn.p2nn.meteor.model.PageResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import cn.p2nn.meteor.entity.SysOrg;
-import cn.p2nn.meteor.mapper.SysOrgMapper;
-import cn.p2nn.meteor.model.PageResult;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +39,7 @@ public class SysOrgService extends ServiceImpl<SysOrgMapper, SysOrg> {
         for (SysOrg item : list) {
             List<SysOrg> children = this.getTree(item.getId());
             //递归子类数据
-            if (children.size() < 1) {
+            if (children.isEmpty()) {
                 children = null;
             }
             item.setValue(item.getId()).setKey(item.getId()).setLabel(item.getName()).setTitle(item.getName()).setChildren(children);

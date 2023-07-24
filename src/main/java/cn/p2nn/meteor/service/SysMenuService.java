@@ -65,7 +65,7 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu> {
         for (SysMenu item : list) {
             //递归子类数据
             List<SysMenu> children = this.getTree(inIds, excludeTypes, item.getId());
-            if (children.size() < 1) {
+            if (children.isEmpty()) {
                 children = null;
             }
             item.setValue(item.getId()).setKey(item.getId()).setLabel(item.getName()).setTitle(item.getName()).setChildren(children);
