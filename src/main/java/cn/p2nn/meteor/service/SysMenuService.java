@@ -41,7 +41,7 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu> {
 
     public List<String> listPermissionCode(String userId) {
         List<SysMenu> menuList = this.baseMapper.listMenu(userId);
-        List<String> permissionList = menuList.stream().map(SysMenu::getPermission).collect(Collectors.toList());
+        List<String> permissionList = menuList.stream().map(SysMenu::getPermission).filter(i -> StringUtils.isNotBlank(i)).collect(Collectors.toList());
         return permissionList;
     }
 

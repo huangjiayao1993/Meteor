@@ -2,6 +2,11 @@ package cn.p2nn.meteor.constants;
 
 import lombok.Data;
 
+/**
+ * 常量池
+ *
+ * @author huangjiayao1993
+ */
 @Data
 public class CommonConstant {
 

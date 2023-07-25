@@ -31,13 +31,26 @@ public class DictWeb extends BaseWeb {
     private final SysDictDataService dictDataService;
 
     /**
-     * 字典缓存刷新
+     * 刷新缓存
      *
      * @return
      */
     @SaCheckPermission("sys:dict:refresh")
     @PostMapping("refresh")
     public Result refresh() {
+        this.dictService.refresh();
+        return Result.success();
+    }
+
+    /**
+     * 清空缓存
+     *
+     * @return
+     */
+    @SaCheckPermission("sys:dict:refresh")
+    @PostMapping("clean")
+    public Result clean() {
+        this.dictService.clean();
         return Result.success();
     }
 

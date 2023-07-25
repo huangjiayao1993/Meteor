@@ -2,6 +2,11 @@ package cn.p2nn.meteor.constants;
 
 import lombok.experimental.FieldNameConstants;
 
+/**
+ * 字段常量池
+ *
+ * @author huangjiayao1993
+ */
 @FieldNameConstants
 public class FieldConstant {
 

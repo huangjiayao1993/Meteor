@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,12 +23,13 @@ public class SysDictDataService extends ServiceImpl<SysDictDataMapper, SysDictDa
 
     public PageResult page(Page page, SysDictData data) {
         LambdaQueryWrapper<SysDictData> qw = Wrappers.lambdaQuery(SysDictData.class)
-                .eq(SysDictData::getType, data.getType())
+                .eq(StringUtils.isNotBlank(data.getType()), SysDictData::getType, data.getType())
                 .like(StringUtils.isNotBlank(data.getName()), SysDictData::getName, data.getName());
         page = this.page(page, qw);
         return PageResult.parse(page);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void create(SysDictData data) {
         long nameCount = this.count(Wrappers.lambdaQuery(SysDictData.class).eq(SysDictData::getType, data.getType()).eq(SysDictData::getName, data.getName()));
         Assert.isFalse(nameCount > 0, () -> {throw new UserException(ResultEnum.DICT_DATA_NAME_EXISTS);});
@@ -36,6 +38,7 @@ public class SysDictDataService extends ServiceImpl<SysDictDataMapper, SysDictDa
         this.save(data);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void update(SysDictData data) {
         long nameCount = this.count(Wrappers.lambdaQuery(SysDictData.class).eq(SysDictData::getType, data.getType()).eq(SysDictData::getName, data.getName()).notIn(SysDictData::getId, data.getId()));
         Assert.isFalse(nameCount > 0, () -> {throw new UserException(ResultEnum.DICT_DATA_NAME_EXISTS);});
@@ -44,7 +47,13 @@ public class SysDictDataService extends ServiceImpl<SysDictDataMapper, SysDictDa
         this.updateById(data);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void remove(List<String> ids) {
         this.removeBatchByIds(ids);
+    }
+
+    public List<SysDictData> listByType(String type) {
+        List<SysDictData> list = this.list(Wrappers.lambdaQuery(SysDictData.class).eq(SysDictData::getType, type));
+        return list;
     }
 }

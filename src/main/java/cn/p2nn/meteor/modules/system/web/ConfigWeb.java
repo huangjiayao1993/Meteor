@@ -5,6 +5,7 @@ import cn.p2nn.meteor.dto.IdsDto;
 import cn.p2nn.meteor.entity.SysConfig;
 import cn.p2nn.meteor.model.PageResult;
 import cn.p2nn.meteor.model.Result;
+import cn.p2nn.meteor.service.RedisService;
 import cn.p2nn.meteor.service.SysConfigService;
 import cn.p2nn.meteor.web.BaseWeb;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,13 +28,26 @@ public class ConfigWeb extends BaseWeb {
     private final SysConfigService configService;
 
     /**
-     * 刷新
+     * 刷新缓存
      *
      * @return
      */
     @SaCheckPermission("sys:config:refresh")
     @PostMapping("refresh")
     public Result refresh() {
+        this.configService.refresh();
+        return Result.success();
+    }
+
+    /**
+     * 清空缓存
+     *
+     * @return
+     */
+    @SaCheckPermission("sys:config:refresh")
+    @PostMapping("clean")
+    public Result clean() {
+        this.configService.clean();
         return Result.success();
     }
 
