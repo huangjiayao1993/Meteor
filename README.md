@@ -1,31 +1,27 @@
-
 <div align="center">
-
-
-[//]: # (![logo]&#40;./public/favicon.ico&#41;)
 
 <h1>Meteor</h1>
 <p align="center">
-	<a href="" target="_blank">
-		<img src="https://img.shields.io/badge/Vue.js-3.3.4-green" alt="Vue">
+    <a href="" target="_blank">
+		<img src="https://img.shields.io/badge/java-17-blue" alt="TypeScript">
 	</a>
 	<a href="" target="_blank">
-		<img src="https://img.shields.io/badge/Vite-4.4.3-yellow" alt="Vite">
+		<img src="https://img.shields.io/badge/SpringBoot-3.1-green" alt="Vue">
 	</a>
 	<a href="" target="_blank">
-		<img src="https://img.shields.io/badge/Pinia-2.1.4-orange" alt="Pinia">
+		<img src="https://img.shields.io/badge/SaToken-1.35.0.RC-orange" alt="Pinia">
 	</a>
 	<a href="" target="_blank">
-		<img src="https://img.shields.io/badge/Ant Design Vue-3.2.20-lightgrey" alt="Ant Design Vue">
+		<img src="https://img.shields.io/badge/MybatisPlus-3.5.3.1-yellow" alt="Vite">
 	</a>
 	<a href="" target="_blank">
-		<img src="https://img.shields.io/badge/TypeScript-latest-blue" alt="TypeScript">
+		<img src="https://img.shields.io/badge/Hutool-5.8.18-lightgrey" alt="Ant Design Vue">
 	</a>
 </p>
 </div>
 
 ## 介绍📖
-Meteor 采用最新的技术架构，基于 springboot3.0 和 jdk17。
+Meteor 采用最新的技术架构，基于 springboot3 和 jdk17。
 
 前端项目 Meteor-System，链接：https://github.com/huangjiayao1993/Meteor-System
 
