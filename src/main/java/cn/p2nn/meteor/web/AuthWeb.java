@@ -1,12 +1,5 @@
 package cn.p2nn.meteor.web;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
@@ -15,11 +8,14 @@ import cn.p2nn.meteor.entity.SysUser;
 import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.exception.AuthException;
 import cn.p2nn.meteor.model.Result;
+import cn.p2nn.meteor.service.CaptchaService;
 import cn.p2nn.meteor.service.SysUserService;
 import cn.p2nn.meteor.vo.AuthPermissionVo;
+import cn.p2nn.meteor.vo.CaptchaVo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 登录权限控制器
@@ -33,6 +29,19 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthWeb extends BaseWeb {
 
     private final SysUserService userService;
+
+    private final CaptchaService captchaService;
+
+    /**
+     * 获取验证码
+     *
+     * @return
+     */
+    @GetMapping("captcha")
+    public Result captcha() {
+        CaptchaVo vo = this.captchaService.create();
+        return Result.success(vo);
+    }
 
     /**
      * 登录
@@ -59,9 +68,9 @@ public class AuthWeb extends BaseWeb {
      */
     @GetMapping("current")
     public Result current() {
-        if (!StpUtil.isLogin()) {
-            return Result.failed();
-        }
+        Assert.isTrue(StpUtil.isLogin(), () -> {
+            throw new AuthException(ResultEnum.AUTH_FAILED);
+        });
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         SysUser user = this.userService.getById(tokenInfo.getLoginId().toString());
         AuthPermissionVo vo = new AuthPermissionVo(user, StpUtil.getRoleList(), StpUtil.getPermissionList());

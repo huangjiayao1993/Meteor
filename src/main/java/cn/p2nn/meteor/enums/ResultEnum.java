@@ -28,11 +28,15 @@ public enum ResultEnum {
     NICKNAME_EXISTS(-200014, "昵称已存在"),
     ROLE_CODE_EXISTS(-200015, "角色标识已存在"),
 
-
-
     DICT_TYPE_EXISTS(-510001, "字段类型已存在"),
     DICT_DATA_NAME_EXISTS(-510002, "字典数据名称已存在"),
     DICT_DATA_VALUE_EXISTS(-510003, "字段数据值已存在"),
+
+    CAPTCHA_LOAD_ERROR(-520001, "验证码获取失败"),
+    CAPTCHA_EXPIRE_TIMEOUT(-520002, "验证码已失效"),
+    CAPTCHA_VALID_ERROR(-520003, "验证码错误"),
+
+    MISSING_PARAMS_ERROR(-530001, "缺少请求参数"),
 
     ;
 

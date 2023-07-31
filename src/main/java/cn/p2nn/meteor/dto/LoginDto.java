@@ -15,4 +15,9 @@ public class LoginDto {
     @NotBlank(message = "登录方式不能为空")
     private String loginType;
 
+    @NotBlank(message = "验证码ID不能为空")
+    private String uuid;
+
+    @NotBlank(message = "验证码不能为空")
+    private String code;
 }

@@ -17,4 +17,6 @@ public class MeteorConfig {
 
     private String defaultPassword;
 
+    private int captchaTimeout = 5;
+
 }

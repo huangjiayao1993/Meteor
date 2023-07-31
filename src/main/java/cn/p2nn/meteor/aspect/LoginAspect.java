@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import cn.p2nn.meteor.dto.LoginDto;
 import cn.p2nn.meteor.entity.SysLoginLog;
 import cn.p2nn.meteor.model.Result;
+import cn.p2nn.meteor.service.CaptchaService;
 import cn.p2nn.meteor.service.SysLoginLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,8 @@ public class LoginAspect {
 
     private final SysLoginLogService loginLogService;
 
+    private final CaptchaService captchaService;
+
     /**
      * 登录日志
      *
@@ -40,6 +43,7 @@ public class LoginAspect {
         entity.setUsername(dto.getUsername()).setLoginType(dto.getLoginType()).setCreateTime(LocalDateTime.now());
         Result proceed;
         try {
+            this.captchaService.valid(dto.getUuid(), dto.getCode());
             proceed = (Result) point.proceed();
             entity.setSuccess(proceed.isSuccess()).setResponseJson(JSONUtil.toJsonStr(proceed));
         } catch (Exception e) {

@@ -34,6 +34,8 @@ mybatis-plus:
 meteor:
   # 默认密码
   default-password: 123456
+  # 验证码过期时长，单位：分钟
+  captcha-timeout: 5
   # 云存储类型
   oss:
     type: huawei
@@ -41,4 +43,5 @@ meteor:
   auth:
     # 忽略的URL
     ignore-url:
+      - /auth/captcha
       - /auth/login

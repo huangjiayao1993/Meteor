@@ -7,15 +7,19 @@ import lombok.Data;
  *
  * @author huangjiayao1993
  */
-@Data
-public class CommonConstant {
+public interface CommonConstant {
 
-    public static final String ADMIN_ID = "1600000000000000000";
+    String ADMIN_ID = "1600000000000000000";
 
-    public static final String ADMIN_ROLE_ID = "1611111111111111111";
+    String ADMIN_ROLE_ID = "1611111111111111111";
 
-    public static final String ADMIN_ROLE_CODE = "role_admin";
+    String ADMIN_ROLE_CODE = "role_admin";
 
-    public static final String ADMIN_PERMISSION = "*:*:*";
+    String ADMIN_PERMISSION = "*:*:*";
 
+    String CAPTCHA_BASE64_PREFIX = "data:image/jpg;base64,";
+
+    String YES = "1";
+
+    String NO = "0";
 }

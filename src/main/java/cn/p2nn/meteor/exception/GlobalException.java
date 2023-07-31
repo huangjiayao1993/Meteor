@@ -1,14 +1,13 @@
 package cn.p2nn.meteor.exception;
 
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
 import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.model.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 全局异常
@@ -95,6 +94,17 @@ public class GlobalException {
     @ExceptionHandler(NotRoleException.class)
     public Result handlerException(NotRoleException e) {
         return Result.failed(ResultEnum.ROLE_ERROR.getCode(), e.getMessage());
+    }
+
+    /**
+     * 缺少参数异常
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Result handlerIllegalArgumentException(IllegalArgumentException e) {
+        return Result.failed(ResultEnum.MISSING_PARAMS_ERROR);
     }
 
 }
