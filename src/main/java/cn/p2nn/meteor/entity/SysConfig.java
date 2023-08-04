@@ -36,4 +36,9 @@ public class SysConfig implements Serializable {
     @TableField("`value`")
     private String value;
 
+    /**
+     * 说明
+     */
+    @TableField("`desc`")
+    private String desc;
 }
