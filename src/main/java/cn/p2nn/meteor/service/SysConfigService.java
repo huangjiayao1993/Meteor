@@ -1,6 +1,5 @@
 package cn.p2nn.meteor.service;
 
-import cn.hutool.extra.spring.SpringUtil;
 import cn.p2nn.meteor.constants.CacheConstant;
 import cn.p2nn.meteor.entity.SysConfig;
 import cn.p2nn.meteor.mapper.SysConfigMapper;

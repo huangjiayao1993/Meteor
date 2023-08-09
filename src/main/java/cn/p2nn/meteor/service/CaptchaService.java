@@ -10,7 +10,6 @@ import cn.p2nn.meteor.config.MeteorConfig;
 import cn.p2nn.meteor.constants.CacheConstant;
 import cn.p2nn.meteor.constants.CommonConstant;
 import cn.p2nn.meteor.enums.ResultEnum;
-import cn.p2nn.meteor.exception.AuthException;
 import cn.p2nn.meteor.exception.BusinessException;
 import cn.p2nn.meteor.vo.CaptchaVo;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +59,7 @@ public class CaptchaService {
         });
         boolean match = StringUtils.equalsIgnoreCase(cache, code);
         Assert.isTrue(match, () -> {
-            throw new AuthException(ResultEnum.CAPTCHA_VALID_ERROR);
+            throw new BusinessException(ResultEnum.CAPTCHA_VALID_ERROR);
         });
         return match;
     }

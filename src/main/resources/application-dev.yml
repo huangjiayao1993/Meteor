@@ -6,10 +6,9 @@ spring:
     password: 123456
   data:
     redis:
-      database: 2
+      database: 10
       host: 127.0.0.1
       port: 6379
-      password: 123456
       timeout: 10s
       lettuce:
         pool:
@@ -21,3 +20,34 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 系统配置
+meteor:
+  # 云存储类型
+  oss:
+    type: huawei
+    huawei:
+      endpoint:
+      bucket:
+      ak:
+      sk:
+    ali:
+      endpoint:
+      bucket:
+      ak:
+      sk:
+    tencent:
+      endpoint:
+      bucket:
+      ak:
+      sk:
+    qiniu:
+      endpoint:
+      bucket:
+      ak:
+      sk:
+    minio:
+      endpoint:
+      bucket:
+      ak:
+      sk:

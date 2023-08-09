@@ -5,24 +5,24 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 业务相关异常
+ * 云存储相关异常
  *
  * @author huangjiayao1993
  */
 @Data
-public class BusinessException extends RuntimeException {
+public class OssException extends RuntimeException {
 
     private int code;
 
     private String msg;
 
-    public BusinessException(ResultEnum r) {
+    public OssException(ResultEnum r) {
         super(r.getMsg());
         this.code = r.getCode();
         this.msg = r.getMsg();
     }
 
-    public BusinessException(ResultEnum r, String extMsg) {
+    public OssException(ResultEnum r, String extMsg) {
         super(StringUtils.join(r.getMsg(), extMsg));
         this.code = r.getCode();
         this.msg = StringUtils.join(r.getMsg(), extMsg);

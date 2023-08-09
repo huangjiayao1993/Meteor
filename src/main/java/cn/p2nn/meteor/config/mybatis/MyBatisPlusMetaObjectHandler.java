@@ -1,4 +1,4 @@
-package cn.p2nn.meteor.config;
+package cn.p2nn.meteor.config.mybatis;
 
 import java.time.LocalDateTime;
 

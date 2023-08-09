@@ -17,3 +17,34 @@ spring:
           max-wait: -1ms
           max-idle: 10
           min-idle: 0
+
+# 系统配置
+meteor:
+  # 云存储类型
+  oss:
+    type: huawei
+    huawei:
+      endpoint:
+      bucket:
+      ak:
+      sk:
+    ali:
+      endpoint:
+      bucket:
+      ak:
+      sk:
+    tencent:
+      endpoint:
+      bucket:
+      ak:
+      sk:
+    qiniu:
+      endpoint:
+      bucket:
+      ak:
+      sk:
+    minio:
+      endpoint:
+      bucket:
+      ak:
+      sk:

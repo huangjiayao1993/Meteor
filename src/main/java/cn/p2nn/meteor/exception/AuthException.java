@@ -1,9 +1,8 @@
 package cn.p2nn.meteor.exception;
 
-import org.apache.commons.lang3.StringUtils;
-
 import cn.p2nn.meteor.enums.ResultEnum;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 认证相关异常

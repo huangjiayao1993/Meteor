@@ -15,8 +15,14 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "meteor")
 public class MeteorConfig {
 
+    /**
+     * 默认密码
+     */
     private String defaultPassword;
 
+    /**
+     * 验证码过期时长，单位：分钟
+     */
     private int captchaTimeout = 5;
 
 }

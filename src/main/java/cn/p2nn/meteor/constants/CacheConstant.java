@@ -31,4 +31,10 @@ public interface CacheConstant {
      * 是否开启验证码
      */
     String OPEN_CAPTCHA_KEY = "open_captcha";
+
+    /**
+     * OSS云存储使用类型
+     */
+    String OSS_TYPE = "oss_type";
+
 }

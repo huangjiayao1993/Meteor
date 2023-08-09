@@ -4,6 +4,10 @@ server:
 spring:
   profiles:
     active: dev
+  servlet:
+    multipart:
+      # 最大文件上传 30M
+      max-file-size: 31457280
 
 sa-token:
   # token名称 (同时也是cookie名称)
@@ -33,12 +37,9 @@ mybatis-plus:
 # 系统配置
 meteor:
   # 默认密码
-  default-password: 123456
+  default-password: 12345678
   # 验证码过期时长，单位：分钟
   captcha-timeout: 5
-  # 云存储类型
-  oss:
-    type: huawei
   # 认证相关
   auth:
     # 忽略的URL

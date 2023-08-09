@@ -26,8 +26,6 @@ Meteor 采用前后端分离的模式最新的技术架构，基于 springboot3 
 
 目前正在持续更新中，对于项目有不完善的地方，希望大家能多提意见。（⭐🤣）
 
-配套前端项目 Meteor-System，链接见下方。
-
 ## 快速启动📖
 
 以下为后台启动的过程：
@@ -53,6 +51,19 @@ Meteor 采用前后端分离的模式最新的技术架构，基于 springboot3 
 
 待测试环境部署，或本地部署
 
+## 效果图👀
+
+<img src="./doc/登录页.png" width="500">
+<img src="./doc/首页.png" width="500">
+<img src="./doc/组织管理.png" width="500">
+<img src="./doc/用户管理.png" width="500">
+<img src="./doc/角色管理.png" width="500">
+<img src="./doc/角色授权.png" width="500">
+<img src="./doc/菜单管理.png" width="500">
+<img src="./doc/系统配置.png" width="500">
+<img src="./doc/登录日志.png" width="500">
+
+
 ## 仓库地址📚
 
 | 类型            | 说明     | 链接（欢迎Star⭐）                                      |
@@ -73,6 +84,8 @@ Meteor 采用前后端分离的模式最新的技术架构，基于 springboot3 
 ## 模块说明
 
 ```
+doc -- 相关文档
+
 sql -- 全量基础版本sql文件
 
 meteor
@@ -99,15 +112,17 @@ meteor
 ```
 
 ## 功能列表
-#### 1. 组织管理
-#### 2. 用户管理
-#### 3. 角色管理
-#### 4. 菜单管理
-#### 5. 系统配置
-#### 6. 字典管理
-#### 7. 登录日志
-#### 8. 操作日志
-#### 9. 持续更新...
+1. 组织管理
+2. 用户管理
+3. 角色管理
+4. 菜单管理
+5. 系统配置
+6. 字典管理
+7. 登录日志
+8. 操作日志
+
+
+9. 持续更新...
 
 ## 开源协议
 <img src="https://img.shields.io/badge/License-MIT-green" alt="Vue">

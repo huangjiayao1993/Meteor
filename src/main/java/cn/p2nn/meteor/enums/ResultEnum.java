@@ -37,6 +37,9 @@ public enum ResultEnum {
     CAPTCHA_VALID_ERROR(-520003, "验证码错误"),
 
     MISSING_PARAMS_ERROR(-530001, "缺少请求参数"),
+    IO_ERROR(-530002, "IO操作异常"),
+
+    MISSING_OSS_DEFAULT_ERROR(-540001, "缺少OSS默认类型"),
 
     ;
 

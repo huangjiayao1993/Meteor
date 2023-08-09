@@ -1,4 +1,4 @@
-package cn.p2nn.meteor.config;
+package cn.p2nn.meteor.config.oss;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -17,8 +17,14 @@ public class OssConfig {
 
     private String type;
 
-    private String domain;
+    private OssHuaweiConfig huaweiConfig;
 
-    private String bucket;
+    private OssAliConfig aliConfig;
+
+    private OssTencentConfig tencentConfig;
+
+    private OssQiniuConfig qiniuConfig;
+
+    private OssMinioConfig minioConfig;
 
 }

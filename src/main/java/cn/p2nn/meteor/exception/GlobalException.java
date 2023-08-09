@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
+
 /**
  * 全局异常
  *
@@ -105,6 +107,17 @@ public class GlobalException {
     @ExceptionHandler(IllegalArgumentException.class)
     public Result handlerIllegalArgumentException(IllegalArgumentException e) {
         return Result.failed(ResultEnum.MISSING_PARAMS_ERROR);
+    }
+
+    /**
+     * IO操作异常
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(IOException.class)
+    public Result handlerIOException(IOException e) {
+        return Result.failed(ResultEnum.IO_ERROR);
     }
 
 }
