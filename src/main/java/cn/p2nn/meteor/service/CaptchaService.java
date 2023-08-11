@@ -13,6 +13,7 @@ import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.exception.BusinessException;
 import cn.p2nn.meteor.vo.CaptchaVo;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -32,16 +33,13 @@ public class CaptchaService {
 
     private final RedisService redisService;
 
+    @SneakyThrows
     public CaptchaVo create() {
         String uuid = IdUtil.fastUUID();
         LineCaptcha captcha = CaptchaUtil.createLineCaptcha(500, 200, 4, 100);
         captcha.setBackground(Color.getHSBColor(221, 221, 221));
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(captcha.getImage(), "png", os);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ImageIO.write(captcha.getImage(), "png", os);
         log.error("获取验证码：uuid = [{}], code = [{}]", uuid, captcha.getCode());
         this.redisService.set(uuid, captcha.getCode(), config.getCaptchaTimeout(), TimeUnit.MINUTES);
         String image = StringUtils.join(CommonConstant.CAPTCHA_BASE64_PREFIX, Base64Encoder.encode(os.toByteArray()));
