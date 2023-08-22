@@ -97,7 +97,7 @@ public class OrgWeb extends BaseWeb {
     @SaCheckPermission("sys:org:remove")
     @DeleteMapping("remove")
     public Result remove(@RequestBody @Valid IdsDto dto) {
-        this.orgService.removeBatchByIds(dto.getIds());
+        this.orgService.remove(dto.getIds());
         return Result.success();
     }
 

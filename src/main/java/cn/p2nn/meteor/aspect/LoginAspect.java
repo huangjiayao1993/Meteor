@@ -43,7 +43,6 @@ public class LoginAspect {
         entity.setUsername(dto.getUsername()).setLoginType(dto.getLoginType()).setCreateTime(LocalDateTime.now());
         Result proceed;
         try {
-            this.captchaService.valid(dto.getUuid(), dto.getCode());
             proceed = (Result) point.proceed();
             entity.setSuccess(proceed.isSuccess()).setResponseJson(JSONUtil.toJsonStr(proceed));
         } catch (Exception e) {
