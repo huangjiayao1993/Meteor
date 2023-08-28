@@ -51,7 +51,6 @@ public class AuthWeb extends BaseWeb {
      */
     @PostMapping("login")
     public Result login(@RequestBody @Valid LoginDto dto) {
-        this.captchaService.valid(dto.getUuid(), dto.getCode());
         SysUser user = this.userService.getByUsername(dto.getUsername());
         Assert.notNull(user, () -> {
             throw new AuthException(ResultEnum.USERNAME_PASSWORD_ERROR);

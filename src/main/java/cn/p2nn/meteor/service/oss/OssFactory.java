@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import cn.p2nn.meteor.config.oss.OssConfig;
+import cn.p2nn.meteor.config.OssConfig;
 import cn.p2nn.meteor.constants.CacheConstant;
 import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.enums.ThirdEnum;
@@ -64,23 +64,12 @@ public class OssFactory {
             throw new OssException(ResultEnum.MISSING_OSS_DEFAULT_ERROR);
         });
         switch (third) {
-            case HUAWEI:
-                oss = getHuawei();
-                break;
-            case ALI:
-                oss = getAli();
-                break;
-            case TENCENT:
-                oss = getTencent();
-                break;
-            case QINIU:
-                oss = getQiniu();
-                break;
-            case MINIO:
-                oss = getMinio();
-                break;
-            default:
-                throw new OssException(ResultEnum.MISSING_OSS_DEFAULT_ERROR);
+            case HUAWEI -> oss = getHuawei();
+            case ALI -> oss = getAli();
+            case TENCENT -> oss = getTencent();
+            case QINIU -> oss = getQiniu();
+            case MINIO -> oss = getMinio();
+            default -> throw new OssException(ResultEnum.MISSING_OSS_DEFAULT_ERROR);
         }
         return oss;
     }

@@ -1,7 +1,7 @@
 package cn.p2nn.meteor.service.oss;
 
 import cn.hutool.extra.spring.SpringUtil;
-import cn.p2nn.meteor.config.oss.OssHuaweiConfig;
+import cn.p2nn.meteor.config.OssConfig;
 import com.obs.services.ObsClient;
 import com.obs.services.model.PutObjectResult;
 
@@ -18,7 +18,7 @@ public class OssHuawei extends Oss {
         if(client == null) {
             synchronized (OssHuawei.class) {
                 if(client == null) {
-                    OssHuaweiConfig bean = SpringUtil.getBean(OssHuaweiConfig.class);
+                    OssConfig bean = SpringUtil.getBean(OssConfig.class);
                     client = new ObsClient(bean.getAk(), bean.getSk(), bean.getEndpoint());
                     BUCKET = bean.getBucket();
                 }
