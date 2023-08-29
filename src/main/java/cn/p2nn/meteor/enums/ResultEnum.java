@@ -28,6 +28,11 @@ public enum ResultEnum {
     NICKNAME_EXISTS(-200014, "昵称已存在"),
     ROLE_CODE_EXISTS(-200015, "角色标识已存在"),
     ORG_USER_EXISTS(-200016, "该组织存在用户"),
+    RSA_PRIVATE_NOT_FOUND(-200017, "RSA私钥未配置"),
+    RSA_PUBLIC_NOT_FOUND(-200018, "RSA公钥未配置"),
+    AES_PRIVATE_NOT_FOUND(-200019, "AES私钥未配置"),
+    RSA_VALID_ERROR(-200020, "RSA解密失败"),
+    AES_VALID_ERROR(-200021, "AES解密失败"),
 
     DICT_TYPE_EXISTS(-510001, "字段类型已存在"),
     DICT_DATA_NAME_EXISTS(-510002, "字典数据名称已存在"),
