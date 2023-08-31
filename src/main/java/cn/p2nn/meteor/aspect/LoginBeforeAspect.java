@@ -38,7 +38,6 @@ public class LoginBeforeAspect {
      *
      * @param point
      */
-    @SneakyThrows
     @Before("execution(* cn.p2nn.meteor.web.AuthWeb.login(..))")
     public void loginBefore(JoinPoint point) {
         LoginDto dto = (LoginDto) point.getArgs()[0];
