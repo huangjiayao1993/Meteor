@@ -4,16 +4,14 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.p2nn.meteor.config.MeteorConfig;
 import cn.p2nn.meteor.model.Result;
 import cn.p2nn.meteor.utils.OssUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -26,6 +24,19 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("common")
 @RequiredArgsConstructor
 public class CommonWeb extends BaseWeb {
+
+    private final MeteorConfig config;
+
+    /**
+     * 获取app应用相关信息
+     *
+     * @return
+     */
+    @GetMapping("app/info")
+    public Result appInfo() {
+        String version = this.config.getVersion();
+        return Result.success(version);
+    }
 
     /**
      * 通用上传
@@ -45,13 +56,13 @@ public class CommonWeb extends BaseWeb {
         // 获取随机数
         String uuid = IdUtil.fastSimpleUUID();
         // 拼接文件名称
-        String fileName = StringUtils.join(uuid, current, fileSuffix);
+        String fileName = StrUtil.join(uuid, current, fileSuffix);
         // 业务ID
-        if (StringUtils.isBlank(businessId)) {
+        if (StrUtil.isBlank(businessId)) {
             businessId = DateUtil.format(DateUtil.date(), DatePattern.PURE_DATE_PATTERN);
         }
         // 拼接云存储objectKey
-        String ok = StringUtils.join(objectKey, StrPool.SLASH, businessId, StrPool.SLASH, fileName);
+        String ok = StrUtil.join(objectKey, StrPool.SLASH, businessId, StrPool.SLASH, fileName);
         // 上传云存储
         String url = OssUtil.upload(file.getInputStream(), ok);
         return Result.success(url);

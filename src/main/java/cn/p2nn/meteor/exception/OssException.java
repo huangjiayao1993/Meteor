@@ -1,8 +1,8 @@
 package cn.p2nn.meteor.exception;
 
+import cn.hutool.core.util.StrUtil;
 import cn.p2nn.meteor.enums.ResultEnum;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 云存储相关异常
@@ -23,9 +23,9 @@ public class OssException extends RuntimeException {
     }
 
     public OssException(ResultEnum r, String extMsg) {
-        super(StringUtils.join(r.getMsg(), extMsg));
+        super(StrUtil.join(r.getMsg(), extMsg));
         this.code = r.getCode();
-        this.msg = StringUtils.join(r.getMsg(), extMsg);
+        this.msg = StrUtil.join(r.getMsg(), extMsg);
     }
 
 }

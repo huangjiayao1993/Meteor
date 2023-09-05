@@ -36,6 +36,8 @@ mybatis-plus:
 
 # 系统配置
 meteor:
+  # 程序版本号
+  version: @version@
   # 默认密码
   default-password: 12345678
   # 验证码过期时长，单位：分钟

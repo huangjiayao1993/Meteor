@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @Component
 @ConfigurationProperties(prefix = "meteor.auth")
-public class MeteorAuthConfig {
+public class AuthConfig {
 
     private List<String> ignoreUrl;
 

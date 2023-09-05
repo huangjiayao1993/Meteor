@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +41,7 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu> {
 
     public List<String> listPermissionCode(String userId) {
         List<SysMenu> menuList = this.baseMapper.listMenu(userId);
-        List<String> permissionList = menuList.stream().map(SysMenu::getPermission).filter(i -> StringUtils.isNotBlank(i)).collect(Collectors.toList());
+        List<String> permissionList = menuList.stream().map(SysMenu::getPermission).filter(i -> StrUtil.isNotBlank(i)).collect(Collectors.toList());
         return permissionList;
     }
 
@@ -53,7 +53,7 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu> {
 
     public List<SysMenu> getTree(List<String> inIds, Integer[] excludeTypes, String pid) {
         LambdaQueryWrapper<SysMenu> qw = Wrappers.lambdaQuery();
-        if (StringUtils.isEmpty(pid)) {
+        if (StrUtil.isEmpty(pid)) {
             qw.isNull(SysMenu::getPid);
         } else {
             qw.eq(SysMenu::getPid, pid);

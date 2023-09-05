@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-    private final MeteorAuthConfig meteorAuthConfig;
+    private final AuthConfig authConfig;
 
     /**
      * 注册 [Sa-Token 全局过滤器]
@@ -53,7 +53,7 @@ public class WebConfig implements WebMvcConfigurer {
                 })
                 // 认证函数: 每次请求执行
                 .setAuth(obj -> {
-                    SaRouter.notMatch(this.meteorAuthConfig.getIgnoreUrl()).check(() -> StpUtil.checkLogin());
+                    SaRouter.notMatch(this.authConfig.getIgnoreUrl()).check(() -> StpUtil.checkLogin());
                 })
                 // 认证异常后
                 .setError(e -> JSONUtil.toJsonStr(Result.failed(ResultEnum.AUTH_FAILED)));

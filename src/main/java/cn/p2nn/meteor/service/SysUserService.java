@@ -2,7 +2,7 @@ package cn.p2nn.meteor.service;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +37,8 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
     public PageResult page(Page page, SysUser user) {
         LambdaQueryWrapper<SysUser> qw = Wrappers.lambdaQuery(SysUser.class)
                 .select(SysUser.class, i -> !(i.getProperty().equals(FieldConstant.Fields.password)) && !(i.getProperty().equals(FieldConstant.Fields.salt)))
-                .like(StringUtils.isNotBlank(user.getNickname()), SysUser::getNickname, user.getNickname())
-                .eq(StringUtils.isNotBlank(user.getOrgId()), SysUser::getOrgId, user.getOrgId())
+                .like(StrUtil.isNotBlank(user.getNickname()), SysUser::getNickname, user.getNickname())
+                .eq(StrUtil.isNotBlank(user.getOrgId()), SysUser::getOrgId, user.getOrgId())
                 .orderByDesc(BaseEntity::getCreateTime);
         page = this.page(page, qw);
         return PageResult.parse(page);

@@ -1,6 +1,7 @@
 package cn.p2nn.meteor.service;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import cn.p2nn.meteor.entity.SysDictData;
 import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.exception.UserException;
@@ -11,7 +12,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +23,8 @@ public class SysDictDataService extends ServiceImpl<SysDictDataMapper, SysDictDa
 
     public PageResult page(Page page, SysDictData data) {
         LambdaQueryWrapper<SysDictData> qw = Wrappers.lambdaQuery(SysDictData.class)
-                .eq(StringUtils.isNotBlank(data.getType()), SysDictData::getType, data.getType())
-                .like(StringUtils.isNotBlank(data.getName()), SysDictData::getName, data.getName());
+                .eq(StrUtil.isNotBlank(data.getType()), SysDictData::getType, data.getType())
+                .like(StrUtil.isNotBlank(data.getName()), SysDictData::getName, data.getName());
         page = this.page(page, qw);
         return PageResult.parse(page);
     }

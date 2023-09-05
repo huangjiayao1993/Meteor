@@ -15,6 +15,11 @@ import org.springframework.stereotype.Component;
 public class MeteorConfig {
 
     /**
+     * 程序版本号
+     */
+    private String version;
+
+    /**
      * 默认密码
      */
     private String defaultPassword;

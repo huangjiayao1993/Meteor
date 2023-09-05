@@ -2,8 +2,7 @@ package cn.p2nn.meteor.entity;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.StringUtils;
-
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -38,6 +37,6 @@ public class SysRole implements Serializable {
     private String code;
 
     public boolean isAdmin() {
-        return StringUtils.equalsIgnoreCase(CommonConstant.ADMIN_ROLE_ID, this.getId());
+        return StrUtil.equalsIgnoreCase(CommonConstant.ADMIN_ROLE_ID, this.getId());
     }
 }

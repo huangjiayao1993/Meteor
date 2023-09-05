@@ -1,6 +1,7 @@
 package cn.p2nn.meteor.service;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import cn.p2nn.meteor.entity.SysRole;
 import cn.p2nn.meteor.entity.SysUserRole;
 import cn.p2nn.meteor.enums.ResultEnum;
@@ -12,7 +13,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,13 +26,13 @@ public class SysRoleService extends ServiceImpl<SysRoleMapper, SysRole> {
     private final SysUserRoleService userRoleService;
 
     public PageResult page(Page page, SysRole role) {
-        LambdaQueryWrapper<SysRole> qw = Wrappers.lambdaQuery(SysRole.class).like(StringUtils.isNotBlank(role.getName()), SysRole::getName, role.getName());
+        LambdaQueryWrapper<SysRole> qw = Wrappers.lambdaQuery(SysRole.class).like(StrUtil.isNotBlank(role.getName()), SysRole::getName, role.getName());
         page = this.page(page, qw);
         return PageResult.parse(page);
     }
 
     public List<SysRole> list(SysRole role) {
-        LambdaQueryWrapper<SysRole> qw = Wrappers.lambdaQuery(SysRole.class).like(StringUtils.isNotBlank(role.getName()), SysRole::getName, role.getName());
+        LambdaQueryWrapper<SysRole> qw = Wrappers.lambdaQuery(SysRole.class).like(StrUtil.isNotBlank(role.getName()), SysRole::getName, role.getName());
         List<SysRole> list = this.list(qw);
         return list;
     }

@@ -1,5 +1,6 @@
 package cn.p2nn.meteor.service;
 
+import cn.hutool.core.util.StrUtil;
 import cn.p2nn.meteor.constants.CacheConstant;
 import cn.p2nn.meteor.entity.SysConfig;
 import cn.p2nn.meteor.mapper.SysConfigMapper;
@@ -10,7 +11,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
     public void init() {
         List<SysConfig> list = this.list();
         list.stream().forEach(item -> {
-            this.redisService.set(StringUtils.join(CacheConstant.CONFIG_KEY, item.getKey()), item.getValue());
+            this.redisService.set(StrUtil.join(CacheConstant.CONFIG_KEY, item.getKey()), item.getValue());
         });
     }
 
@@ -35,12 +35,12 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
     }
 
     public void clean() {
-        this.redisService.delete(StringUtils.join(CacheConstant.CONFIG_KEY, "*"));
+        this.redisService.delete(StrUtil.join(CacheConstant.CONFIG_KEY, "*"));
     }
 
     public PageResult page(Page page, SysConfig config) {
         LambdaQueryWrapper<SysConfig> qw = Wrappers.lambdaQuery(SysConfig.class)
-                .like(StringUtils.isNotBlank(config.getKey()), SysConfig::getKey, config.getKey())
+                .like(StrUtil.isNotBlank(config.getKey()), SysConfig::getKey, config.getKey())
                 .orderByDesc(SysConfig::getId);
         page = this.page(page, qw);
         return PageResult.parse(page);

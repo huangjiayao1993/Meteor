@@ -3,7 +3,7 @@ package cn.p2nn.meteor.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.springframework.stereotype.Component;
 
 import cn.dev33.satoken.stp.StpInterface;
@@ -39,7 +39,7 @@ public class AuthorityConfig implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object id, String device) {
-        String key = StringUtils.join(CacheConstant.PERMISSION_KEY, id);
+        String key = StrUtil.join(CacheConstant.PERMISSION_KEY, id);
         List<String> cacheList = this.redisService.getList(key);
         List<String> list = new ArrayList<>();
         if (cacheList.isEmpty()) {
@@ -63,7 +63,7 @@ public class AuthorityConfig implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object id, String device) {
-        String key = StringUtils.join(CacheConstant.ROLE_KEY, id);
+        String key = StrUtil.join(CacheConstant.ROLE_KEY, id);
         List<String> cacheList = this.redisService.getList(key);
         List<String> list = new ArrayList<>();
         if (cacheList.isEmpty()) {

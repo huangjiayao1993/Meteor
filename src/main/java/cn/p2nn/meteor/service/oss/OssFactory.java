@@ -3,6 +3,8 @@ package cn.p2nn.meteor.service.oss;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.util.EnumUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.p2nn.meteor.config.OssConfig;
 import cn.p2nn.meteor.constants.CacheConstant;
@@ -10,8 +12,6 @@ import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.enums.ThirdEnum;
 import cn.p2nn.meteor.exception.OssException;
 import cn.p2nn.meteor.service.RedisService;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * OSS云存储工厂
@@ -48,18 +48,18 @@ public class OssFactory {
     }
 
     public static Oss build() {
-        if (ObjectUtils.isEmpty(redisService)) {
+        if (ObjectUtil.isEmpty(redisService)) {
             initRedis();
         }
-        if (ObjectUtils.isEmpty(config)) {
+        if (ObjectUtil.isEmpty(config)) {
             initConfig();
         }
         Oss oss;
         String type = redisService.get(CacheConstant.OSS_TYPE);
-        if (StringUtils.isBlank(type)) {
+        if (StrUtil.isBlank(type)) {
             type = config.getType();
         }
-        ThirdEnum third = EnumUtil.fromStringQuietly(ThirdEnum.class, StringUtils.upperCase(type));
+        ThirdEnum third = EnumUtil.fromStringQuietly(ThirdEnum.class, type);
         Assert.notNull(third, () -> {
             throw new OssException(ResultEnum.MISSING_OSS_DEFAULT_ERROR);
         });
@@ -75,35 +75,35 @@ public class OssFactory {
     }
 
     public static OssHuawei getHuawei() {
-        if (ObjectUtils.isEmpty(huawei)) {
+        if (ObjectUtil.isEmpty(huawei)) {
             huawei = Singleton.get(OssHuawei.class);
         }
         return huawei;
     }
 
     public static OssAli getAli() {
-        if (ObjectUtils.isEmpty(ali)) {
+        if (ObjectUtil.isEmpty(ali)) {
             ali = Singleton.get(OssAli.class);
         }
         return ali;
     }
 
     public static OssTencent getTencent() {
-        if (ObjectUtils.isEmpty(tencent)) {
+        if (ObjectUtil.isEmpty(tencent)) {
             tencent = Singleton.get(OssTencent.class);
         }
         return tencent;
     }
 
     public static OssQiniu getQiniu() {
-        if (ObjectUtils.isEmpty(qiniu)) {
+        if (ObjectUtil.isEmpty(qiniu)) {
             qiniu = Singleton.get(OssQiniu.class);
         }
         return qiniu;
     }
 
     public static OssMinio getMinio() {
-        if (ObjectUtils.isEmpty(minio)) {
+        if (ObjectUtil.isEmpty(minio)) {
             minio = Singleton.get(OssMinio.class);
         }
         return minio;

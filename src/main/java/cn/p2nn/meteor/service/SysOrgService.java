@@ -1,6 +1,7 @@
 package cn.p2nn.meteor.service;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import cn.p2nn.meteor.entity.SysOrg;
 import cn.p2nn.meteor.entity.SysUser;
 import cn.p2nn.meteor.enums.ResultEnum;
@@ -12,7 +13,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ public class SysOrgService extends ServiceImpl<SysOrgMapper, SysOrg> {
     private final SysUserService userService;
 
     public PageResult page(Page page, SysOrg org) {
-        page = this.page(page, Wrappers.lambdaQuery(SysOrg.class).like(StringUtils.isNotBlank(org.getName()), SysOrg::getName, org.getName()).eq(StringUtils.isNotBlank(org.getId()), SysOrg::getPid, org.getId()));
+        page = this.page(page, Wrappers.lambdaQuery(SysOrg.class).like(StrUtil.isNotBlank(org.getName()), SysOrg::getName, org.getName()).eq(StrUtil.isNotBlank(org.getId()), SysOrg::getPid, org.getId()));
         return PageResult.parse(page);
     }
 
@@ -36,7 +36,7 @@ public class SysOrgService extends ServiceImpl<SysOrgMapper, SysOrg> {
 
     List<SysOrg> getTree(String pid) {
         LambdaQueryWrapper<SysOrg> qw = Wrappers.lambdaQuery();
-        if (StringUtils.isEmpty(pid)) {
+        if (StrUtil.isEmpty(pid)) {
             qw.isNull(SysOrg::getPid);
         } else {
             qw.eq(SysOrg::getPid, pid);

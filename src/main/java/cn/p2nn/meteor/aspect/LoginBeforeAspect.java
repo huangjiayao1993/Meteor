@@ -9,7 +9,6 @@ import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.exception.BusinessException;
 import cn.p2nn.meteor.service.CaptchaService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
