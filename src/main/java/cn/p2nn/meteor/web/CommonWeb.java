@@ -11,6 +11,7 @@ import cn.p2nn.meteor.utils.OssUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,13 +57,13 @@ public class CommonWeb extends BaseWeb {
         // 获取随机数
         String uuid = IdUtil.fastSimpleUUID();
         // 拼接文件名称
-        String fileName = StrUtil.join(uuid, current, fileSuffix);
+        String fileName = StringUtils.join(uuid, current, fileSuffix);
         // 业务ID
         if (StrUtil.isBlank(businessId)) {
             businessId = DateUtil.format(DateUtil.date(), DatePattern.PURE_DATE_PATTERN);
         }
         // 拼接云存储objectKey
-        String ok = StrUtil.join(objectKey, StrPool.SLASH, businessId, StrPool.SLASH, fileName);
+        String ok = StringUtils.join(objectKey, StrPool.SLASH, businessId, StrPool.SLASH, fileName);
         // 上传云存储
         String url = OssUtil.upload(file.getInputStream(), ok);
         return Result.success(url);

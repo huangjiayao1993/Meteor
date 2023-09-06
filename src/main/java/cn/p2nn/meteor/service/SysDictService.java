@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +36,7 @@ public class SysDictService extends ServiceImpl<SysDictMapper, SysDict> {
         list.stream().forEach(item -> {
             List<SysDictData> dataList = this.dictDataService.listByType(item.getType());
             if (!dataList.isEmpty()) {
-                this.redisService.setList(StrUtil.join(CacheConstant.DICT_KEY, item.getType()), dataList);
+                this.redisService.setList(StringUtils.join(CacheConstant.DICT_KEY, item.getType()), dataList);
             }
         });
     }
@@ -46,7 +47,7 @@ public class SysDictService extends ServiceImpl<SysDictMapper, SysDict> {
     }
 
     public void clean() {
-        this.redisService.delete(StrUtil.join(CacheConstant.DICT_KEY, "*"));
+        this.redisService.delete(StringUtils.join(CacheConstant.DICT_KEY, "*"));
     }
 
     public PageResult page(Page page, SysDict dict) {

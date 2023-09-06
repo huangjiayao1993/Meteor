@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
     public void init() {
         List<SysConfig> list = this.list();
         list.stream().forEach(item -> {
-            this.redisService.set(StrUtil.join(CacheConstant.CONFIG_KEY, item.getKey()), item.getValue());
+            this.redisService.set(StringUtils.join(CacheConstant.CONFIG_KEY, item.getKey()), item.getValue());
         });
     }
 
@@ -35,7 +36,7 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
     }
 
     public void clean() {
-        this.redisService.delete(StrUtil.join(CacheConstant.CONFIG_KEY, "*"));
+        this.redisService.delete(StringUtils.join(CacheConstant.CONFIG_KEY, "*"));
     }
 
     public PageResult page(Page page, SysConfig config) {

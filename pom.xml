@@ -11,7 +11,7 @@
 
     <groupId>cn.p2nn</groupId>
     <artifactId>meteor</artifactId>
-    <version>1.7.6</version>
+    <version>1.8.0</version>
     <name>meteor</name>
     <description>meteor</description>
 
@@ -45,6 +45,14 @@
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
@@ -68,10 +76,6 @@
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-alone-redis</artifactId>
             <version>${sa-token.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -113,6 +117,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>**/*.yml</include>
+                    <include>**/*.xml</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>

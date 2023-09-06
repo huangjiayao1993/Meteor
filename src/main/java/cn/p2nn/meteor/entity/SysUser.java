@@ -28,24 +28,34 @@ public class SysUser extends BaseEntity {
     /**
      * 用户名
      */
+    @TableField(exist = false)
     private String username;
 
     /**
      * 密码
      */
-    @TableField("`password`")
+    @TableField(exist = false)
     private String password;
 
+    /**
+     * 新密码
+     */
     @TableField(exist = false)
     private String newPassword;
 
     /**
      * 盐
      */
+    @TableField(exist = false)
     private String salt;
 
     /**
-     * 组织id
+     * 账号ID
+     */
+    private String accountId;
+
+    /**
+     * 组织ID
      */
     private String orgId;
 

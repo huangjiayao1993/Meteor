@@ -1,22 +1,12 @@
 package cn.p2nn.meteor.service;
 
-import java.util.List;
-
-import cn.hutool.core.util.StrUtil;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
 import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.lang.Assert;
-import cn.p2nn.meteor.config.MeteorConfig;
+import cn.hutool.core.util.StrUtil;
 import cn.p2nn.meteor.constants.FieldConstant;
 import cn.p2nn.meteor.entity.BaseEntity;
+import cn.p2nn.meteor.entity.SysAccount;
 import cn.p2nn.meteor.entity.SysUser;
 import cn.p2nn.meteor.entity.SysUserRole;
 import cn.p2nn.meteor.enums.ResultEnum;
@@ -24,15 +14,24 @@ import cn.p2nn.meteor.exception.AuthException;
 import cn.p2nn.meteor.exception.UserException;
 import cn.p2nn.meteor.mapper.SysUserMapper;
 import cn.p2nn.meteor.model.PageResult;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
 
-    private final SysUserRoleService userRoleService;
+    private final SysAccountService accountService;
 
-    private final MeteorConfig config;
+    private final SysUserRoleService userRoleService;
 
     public PageResult page(Page page, SysUser user) {
         LambdaQueryWrapper<SysUser> qw = Wrappers.lambdaQuery(SysUser.class)
@@ -44,9 +43,13 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
         return PageResult.parse(page);
     }
 
+    public SysUser getByAccountId(String accountId) {
+        return this.getOne(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getAccountId, accountId));
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public void create(SysUser user) {
-        long usernameCount = this.count(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getUsername, user.getUsername()));
+        long usernameCount = this.accountService.count(Wrappers.lambdaQuery(SysAccount.class).eq(SysAccount::getUsername, user.getUsername()));
         Assert.isFalse(usernameCount > 0, () -> {throw new UserException(ResultEnum.USERNAME_EXISTS);});
         long mobileCount = this.count(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getMobile, user.getMobile()));
         Assert.isFalse(mobileCount > 0, () -> {throw new UserException(ResultEnum.MOBILE_EXISTS);});
@@ -72,38 +75,17 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
 
     @Transactional(rollbackFor = Exception.class)
     public void resetPassword(List<String> ids) {
-        List<SysUser> list = this.listByIds(ids);
-        list.stream().forEach(item -> {
-            String salt = BCrypt.gensalt();
-            item.setSalt(salt).setPassword(BCrypt.hashpw(config.getDefaultPassword(), salt));
-        });
-        this.updateBatchById(list);
+        List<String> accountIds = this.listByIds(ids).stream().map(SysUser::getAccountId).collect(Collectors.toList());
+        this.accountService.resetPassword(accountIds);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void changePassword(String id, String password, String newPassword) {
-        SysUser user = this.getById(id);
-        Assert.isTrue(BCrypt.checkpw(password, user.getPassword()), () -> {throw new UserException(ResultEnum.OLD_PASSWORD_ERROR);});
-        String salt = BCrypt.gensalt();
-        user.setSalt(salt).setPassword(BCrypt.hashpw(newPassword, salt));
-        this.updateById(user);
-    }
-
-    public SysUser getByUsername(String username) {
-        return this.getOne(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getUsername, username));
-    }
-
-    public SysUser getByMobile(String mobile) {
-        return this.getByUsername(mobile);
-    }
-
-    public static void checkPassword(String current, String storage) {
-        boolean check = BCrypt.checkpw(current, storage);
-        Assert.isTrue(check, () -> {throw new AuthException(ResultEnum.USERNAME_PASSWORD_ERROR);});
+    public void changePassword(String accountId, String password, String newPassword) {
+        this.accountService.changePassword(accountId, password, newPassword);
     }
 
     public void checkLogin(SysUser user) {
-        Assert.notNull(user, () -> {throw new AuthException(ResultEnum.USER_NOT_FOUND);});
+        Assert.notNull(user, () -> {throw new AuthException(ResultEnum.USERNAME_PASSWORD_ERROR);});
         Assert.isFalse(user.isStatus(), () -> {throw new UserException(ResultEnum.USER_DEACTIVATED);});
         if (user.isEnableUsed()) {
             boolean inTime = LocalDateTimeUtil.isIn(LocalDateTimeUtil.now(), user.getEnableStartTime(), user.getEnableEndTime());

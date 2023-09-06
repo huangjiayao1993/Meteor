@@ -1,11 +1,5 @@
 package cn.p2nn.meteor.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cn.hutool.core.util.StrUtil;
-import org.springframework.stereotype.Component;
-
 import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.p2nn.meteor.constants.CacheConstant;
@@ -14,6 +8,11 @@ import cn.p2nn.meteor.service.RedisService;
 import cn.p2nn.meteor.service.SysMenuService;
 import cn.p2nn.meteor.service.SysRoleService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 认证权限
@@ -39,7 +38,7 @@ public class AuthorityConfig implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object id, String device) {
-        String key = StrUtil.join(CacheConstant.PERMISSION_KEY, id);
+        String key = StringUtils.join(CacheConstant.PERMISSION_KEY, id);
         List<String> cacheList = this.redisService.getList(key);
         List<String> list = new ArrayList<>();
         if (cacheList.isEmpty()) {
@@ -63,7 +62,7 @@ public class AuthorityConfig implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object id, String device) {
-        String key = StrUtil.join(CacheConstant.ROLE_KEY, id);
+        String key = StringUtils.join(CacheConstant.ROLE_KEY, id);
         List<String> cacheList = this.redisService.getList(key);
         List<String> list = new ArrayList<>();
         if (cacheList.isEmpty()) {

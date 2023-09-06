@@ -16,12 +16,12 @@ import cn.p2nn.meteor.vo.CaptchaVo;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -42,12 +42,12 @@ public class CaptchaService {
         ImageIO.write(captcha.getImage(), "png", os);
         log.error("获取验证码：uuid = [{}], code = [{}]", uuid, captcha.getCode());
         this.redisService.set(uuid, captcha.getCode(), config.getCaptchaTimeout(), TimeUnit.MINUTES);
-        String image = StrUtil.join(CommonConstant.CAPTCHA_BASE64_PREFIX, Base64Encoder.encode(os.toByteArray()));
+        String image = StringUtils.join(CommonConstant.CAPTCHA_BASE64_PREFIX, Base64Encoder.encode(os.toByteArray()));
         return new CaptchaVo(uuid, image);
     }
 
     public boolean valid(String uuid, String code) {
-        String open = this.redisService.get(StrUtil.join(CacheConstant.CONFIG_KEY, CacheConstant.OPEN_CAPTCHA_KEY));
+        String open = this.redisService.get(StringUtils.join(CacheConstant.CONFIG_KEY, CacheConstant.OPEN_CAPTCHA_KEY));
         if (!BooleanUtil.toBoolean(open)) {
             return true;
         }

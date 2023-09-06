@@ -126,7 +126,7 @@ public class UserWeb extends BaseWeb {
     @SaCheckPermission("sys:user:changePassword")
     @PutMapping("change/password")
     public Result changePassword(@RequestBody SysUser user) {
-        this.userService.changePassword(user.getId(), user.getPassword(), user.getNewPassword());
+        this.userService.changePassword(user.getAccountId(), user.getPassword(), user.getNewPassword());
         return Result.success();
     }
 

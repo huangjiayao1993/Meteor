@@ -4,11 +4,13 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
 import cn.p2nn.meteor.dto.LoginDto;
+import cn.p2nn.meteor.entity.SysAccount;
 import cn.p2nn.meteor.entity.SysUser;
 import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.exception.AuthException;
 import cn.p2nn.meteor.model.Result;
 import cn.p2nn.meteor.service.CaptchaService;
+import cn.p2nn.meteor.service.SysAccountService;
 import cn.p2nn.meteor.service.SysUserService;
 import cn.p2nn.meteor.vo.AuthPermissionVo;
 import cn.p2nn.meteor.vo.CaptchaVo;
@@ -27,6 +29,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("auth")
 @RequiredArgsConstructor
 public class AuthWeb extends BaseWeb {
+
+    private final SysAccountService accountService;
 
     private final SysUserService userService;
 
@@ -51,11 +55,15 @@ public class AuthWeb extends BaseWeb {
      */
     @PostMapping("login")
     public Result login(@RequestBody @Valid LoginDto dto) {
-        SysUser user = this.userService.getByUsername(dto.getUsername());
+        SysAccount account = this.accountService.getByUsername(dto.getUsername());
+        Assert.notNull(account, () -> {
+            throw new AuthException(ResultEnum.USERNAME_PASSWORD_ERROR);
+        });
+        SysUser user = this.userService.getByAccountId(account.getId());
         Assert.notNull(user, () -> {
             throw new AuthException(ResultEnum.USERNAME_PASSWORD_ERROR);
         });
-        SysUserService.checkPassword(dto.getPassword(), user.getPassword());
+        SysAccountService.checkPassword(dto.getPassword(), account.getPassword());
         this.userService.checkLogin(user);
         StpUtil.login(user.getId());
         return Result.success(StpUtil.getTokenInfo());

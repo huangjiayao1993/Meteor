@@ -2,12 +2,12 @@ package cn.p2nn.meteor.listener;
 
 import cn.dev33.satoken.listener.SaTokenListenerForSimple;
 import cn.dev33.satoken.stp.SaLoginModel;
-import cn.hutool.core.util.StrUtil;
 import cn.p2nn.meteor.constants.CacheConstant;
 import cn.p2nn.meteor.entity.SysUser;
 import cn.p2nn.meteor.service.RedisService;
 import cn.p2nn.meteor.service.SysUserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -34,7 +34,7 @@ public class AuthListener extends SaTokenListenerForSimple {
 
     @Override
     public void doLogout(String loginType, Object loginId, String tokenValue) {
-        redisService.delete(StrUtil.join(CacheConstant.PERMISSION_KEY, loginId));
-        redisService.delete(StrUtil.join(CacheConstant.ROLE_KEY, loginId));
+        redisService.delete(StringUtils.join(CacheConstant.PERMISSION_KEY, loginId));
+        redisService.delete(StringUtils.join(CacheConstant.ROLE_KEY, loginId));
     }
 }
