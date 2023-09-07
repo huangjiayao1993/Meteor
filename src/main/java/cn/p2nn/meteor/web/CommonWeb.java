@@ -8,6 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.p2nn.meteor.config.MeteorConfig;
 import cn.p2nn.meteor.model.Result;
 import cn.p2nn.meteor.utils.OssUtil;
+import cn.p2nn.meteor.vo.AppInfoVo;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -35,8 +36,9 @@ public class CommonWeb extends BaseWeb {
      */
     @GetMapping("app/info")
     public Result appInfo() {
-        String version = this.config.getVersion();
-        return Result.success(version);
+        AppInfoVo vo = new AppInfoVo();
+        vo.setVersion(this.config.getVersion());
+        return Result.success(vo);
     }
 
     /**
