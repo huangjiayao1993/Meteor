@@ -10,6 +10,7 @@ public enum ResultEnum {
     SUCCESS(0, "成功"),
     FAILED(-100000, "失败"),
     AUTH_FAILED(-100001, "Token认证异常"),
+    LOGIN_TYPE_FAILED(-100002, "登录类型错误"),
 
     ACCOUNT_NOT_FOUND(-200000, "账号不存在"),
     USER_NOT_FOUND(-200001, "用户不存在"),
@@ -34,6 +35,9 @@ public enum ResultEnum {
     AES_PRIVATE_NOT_FOUND(-200020, "AES私钥未配置"),
     RSA_VALID_ERROR(-200021, "RSA解密失败"),
     AES_VALID_ERROR(-200022, "AES解密失败"),
+
+    WX_CONFIG_NOT_FOUND(-300000, "微信配置不存在"),
+    WX_OPENID_GET_ERROR(-300001, "微信openId获取失败"),
 
     DICT_TYPE_EXISTS(-510001, "字段类型已存在"),
     DICT_DATA_NAME_EXISTS(-510002, "字典数据名称已存在"),

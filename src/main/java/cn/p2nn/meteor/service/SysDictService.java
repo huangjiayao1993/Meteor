@@ -9,8 +9,6 @@ import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.exception.UserException;
 import cn.p2nn.meteor.mapper.SysDictMapper;
 import cn.p2nn.meteor.model.PageResult;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.PostConstruct;
@@ -33,7 +31,7 @@ public class SysDictService extends ServiceImpl<SysDictMapper, SysDict> {
     @PostConstruct
     public void init() {
         List<SysDict> list = this.list();
-        list.stream().forEach(item -> {
+        list.forEach(item -> {
             List<SysDictData> dataList = this.dictDataService.listByType(item.getType());
             if (!dataList.isEmpty()) {
                 this.redisService.setList(StringUtils.join(CacheConstant.DICT_KEY, item.getType()), dataList);
@@ -51,23 +49,23 @@ public class SysDictService extends ServiceImpl<SysDictMapper, SysDict> {
     }
 
     public PageResult page(Page page, SysDict dict) {
-        LambdaQueryWrapper<SysDict> qw = Wrappers.lambdaQuery(SysDict.class)
+        page = this.lambdaQuery()
                 .like(StrUtil.isNotBlank(dict.getName()), SysDict::getName, dict.getName())
-                .orderByDesc(SysDict::getId);
-        page = this.page(page, qw);
+                .orderByDesc(SysDict::getId)
+                .page(page);
         return PageResult.parse(page);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void create(SysDict dict) {
-        long count = this.count(Wrappers.lambdaQuery(SysDict.class).eq(SysDict::getType, dict.getType()));
+        long count = this.lambdaQuery().eq(SysDict::getType, dict.getType()).count();
         Assert.isFalse(count > 0, () -> {throw new UserException(ResultEnum.DICT_TYPE_EXISTS);});
         this.save(dict);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void update(SysDict dict) {
-        long count = this.count(Wrappers.lambdaQuery(SysDict.class).eq(SysDict::getType, dict.getType()).notIn(SysDict::getId, dict.getId()));
+        long count = this.lambdaQuery().eq(SysDict::getType, dict.getType()).notIn(SysDict::getId, dict.getId()).count();
         Assert.isFalse(count > 0, () -> {throw new UserException(ResultEnum.DICT_TYPE_EXISTS);});
         this.updateById(dict);
     }
@@ -75,7 +73,7 @@ public class SysDictService extends ServiceImpl<SysDictMapper, SysDict> {
     @Transactional(rollbackFor = Exception.class)
     public void remove(List<String> ids) {
         List<String> list = this.listByIds(ids).stream().map(SysDict::getType).collect(Collectors.toList());
-        List<String> dataIds = this.dictDataService.list(Wrappers.lambdaQuery(SysDictData.class).in(SysDictData::getType, list)).stream().map(SysDictData::getId).collect(Collectors.toList());
+        List<String> dataIds = this.dictDataService.lambdaQuery().in(SysDictData::getType, list).list().stream().map(SysDictData::getId).collect(Collectors.toList());
         this.dictDataService.remove(dataIds);
         this.removeBatchByIds(ids);
     }

@@ -1,5 +1,6 @@
 package cn.p2nn.meteor.vo;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -20,7 +21,10 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 public class AuthPermissionVo implements Serializable {
 
-    private SysUser user;
+    @Serial
+    private static final long serialVersionUID = 8480891262642969496L;
+
+    private Object data;
 
     private List<String> roleList;
 

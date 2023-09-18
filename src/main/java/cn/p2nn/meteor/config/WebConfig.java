@@ -7,8 +7,10 @@ import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.json.JSONUtil;
 import cn.p2nn.meteor.enums.ResultEnum;
+import cn.p2nn.meteor.exception.AuthException;
 import cn.p2nn.meteor.model.Result;
 import cn.p2nn.meteor.resolver.PageArgumentResolver;
+import cn.p2nn.meteor.utils.StpClientUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
                             // 允许的请求方式
                             .setHeader("Access-Control-Allow-Methods", "PUT,DELETE,POST,GET")
                             // 允许的header参数
-                            .setHeader("Access-Control-Allow-Headers", "AUTHORIZATION,CONTENT-TYPE")
+                            .setHeader("Access-Control-Allow-Headers", "AUTHORIZATION,CONTENT-TYPE, loginType")
                             // 允许凭证
                             .setHeader("Access-Control-Allow-Credentials", "true")
                             // 有效时间
@@ -53,7 +55,11 @@ public class WebConfig implements WebMvcConfigurer {
                 })
                 // 认证函数: 每次请求执行
                 .setAuth(obj -> {
-                    SaRouter.notMatch(this.authConfig.getIgnoreUrl()).check(() -> StpUtil.checkLogin());
+                    SaRouter.notMatch(this.authConfig.getIgnoreUrl()).check(r -> {
+                        if(!StpUtil.isLogin() && !StpClientUtil.isLogin()) {
+                            throw new AuthException(ResultEnum.AUTH_FAILED);
+                        }
+                    });
                 })
                 // 认证异常后
                 .setError(e -> JSONUtil.toJsonStr(Result.failed(ResultEnum.AUTH_FAILED)));

@@ -6,6 +6,7 @@ import cn.dev33.satoken.exception.NotRoleException;
 import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.model.Result;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -118,6 +119,17 @@ public class GlobalException {
     @ExceptionHandler(IOException.class)
     public Result handlerIOException(IOException e) {
         return Result.failed(ResultEnum.IO_ERROR);
+    }
+
+    /**
+     * 微信异常
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(WxErrorException.class)
+    public Result handlerWxErrorException(WxErrorException e) {
+        return Result.failed(e.getError().getErrorCode(), e.getError().getErrorMsg());
     }
 
 }

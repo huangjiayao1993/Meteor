@@ -27,3 +27,12 @@ meteor:
     bucket:
     ak:
     sk:
+
+# 微信相关配置
+wx:
+  # 小程序配置
+  miniapp:
+    #微信小程序的appid
+    appid: 123456
+    #微信小程序的Secret
+    secret: abcdefg

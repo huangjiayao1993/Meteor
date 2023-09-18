@@ -19,7 +19,8 @@ public interface CommonConstant {
 
     String CAPTCHA_BASE64_PREFIX = "data:image/jpg;base64,";
 
-    String YES = "1";
+    String WX_USERNAME_PREFIX = "wx_user_";
 
-    String NO = "0";
+    String WX_NICKNAME_PREFIX = "wx_nick_";
+
 }

@@ -1,6 +1,5 @@
 package cn.p2nn.meteor.service;
 
-import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
@@ -44,26 +43,35 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
     }
 
     public SysUser getByAccountId(String accountId) {
-        return this.getOne(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getAccountId, accountId));
+        return this.lambdaQuery().eq(SysUser::getAccountId, accountId).one();
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void create(SysUser user) {
-        long usernameCount = this.accountService.count(Wrappers.lambdaQuery(SysAccount.class).eq(SysAccount::getUsername, user.getUsername()));
-        Assert.isFalse(usernameCount > 0, () -> {throw new UserException(ResultEnum.USERNAME_EXISTS);});
-        long mobileCount = this.count(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getMobile, user.getMobile()));
-        Assert.isFalse(mobileCount > 0, () -> {throw new UserException(ResultEnum.MOBILE_EXISTS);});
-        String salt = BCrypt.gensalt();
-        user.setSalt(salt).setPassword(BCrypt.hashpw(user.getPassword(), salt));
+    public SysUser create(SysUser user) {
+        long usernameCount = this.accountService.lambdaQuery().eq(SysAccount::getUsername, user.getUsername()).count();
+        Assert.isFalse(usernameCount > 0, () -> {
+            throw new UserException(ResultEnum.USERNAME_EXISTS);
+        });
+        long mobileCount = this.lambdaQuery().eq(SysUser::getMobile, user.getMobile()).count();
+        Assert.isFalse(mobileCount > 0, () -> {
+            throw new UserException(ResultEnum.MOBILE_EXISTS);
+        });
+        SysAccount account = this.accountService.create(user.getUsername(), user.getPassword());
+        user.setAccountId(account.getId());
         this.save(user);
+        return user;
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void update(SysUser user) {
-        long nicknameCount = this.count(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getNickname, user.getNickname()).notIn(BaseEntity::getId, user.getId()));
-        Assert.isFalse(nicknameCount > 0, () -> {throw new UserException(ResultEnum.NICKNAME_EXISTS);});
-        long mobileCount = this.count(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getMobile, user.getMobile()).notIn(BaseEntity::getId, user.getId()));
-        Assert.isFalse(mobileCount > 0, () -> {throw new UserException(ResultEnum.MOBILE_EXISTS);});
+        long nicknameCount = this.lambdaQuery().eq(SysUser::getNickname, user.getNickname()).notIn(BaseEntity::getId, user.getId()).count();
+        Assert.isFalse(nicknameCount > 0, () -> {
+            throw new UserException(ResultEnum.NICKNAME_EXISTS);
+        });
+        long mobileCount = this.lambdaQuery().eq(SysUser::getMobile, user.getMobile()).notIn(BaseEntity::getId, user.getId()).count();
+        Assert.isFalse(mobileCount > 0, () -> {
+            throw new UserException(ResultEnum.MOBILE_EXISTS);
+        });
         this.updateById(user);
     }
 
@@ -85,11 +93,17 @@ public class SysUserService extends ServiceImpl<SysUserMapper, SysUser> {
     }
 
     public void checkLogin(SysUser user) {
-        Assert.notNull(user, () -> {throw new AuthException(ResultEnum.USERNAME_PASSWORD_ERROR);});
-        Assert.isFalse(user.isStatus(), () -> {throw new UserException(ResultEnum.USER_DEACTIVATED);});
+        Assert.notNull(user, () -> {
+            throw new AuthException(ResultEnum.USERNAME_PASSWORD_ERROR);
+        });
+        Assert.isFalse(user.isStatus(), () -> {
+            throw new UserException(ResultEnum.USER_DEACTIVATED);
+        });
         if (user.isEnableUsed()) {
             boolean inTime = LocalDateTimeUtil.isIn(LocalDateTimeUtil.now(), user.getEnableStartTime(), user.getEnableEndTime());
-            Assert.isTrue(inTime, () -> {throw new UserException(ResultEnum.USER_NOTIN_USE_TIME);});
+            Assert.isTrue(inTime, () -> {
+                throw new UserException(ResultEnum.USER_NOTIN_USE_TIME);
+            });
         }
     }
 

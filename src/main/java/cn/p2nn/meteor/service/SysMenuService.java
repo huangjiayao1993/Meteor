@@ -1,23 +1,21 @@
 package cn.p2nn.meteor.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import cn.hutool.core.util.StrUtil;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.p2nn.meteor.entity.SysMenu;
 import cn.p2nn.meteor.entity.SysRoleMenu;
 import cn.p2nn.meteor.mapper.SysMenuMapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,21 +26,18 @@ public class SysMenuService extends ServiceImpl<SysMenuMapper, SysMenu> {
     public List<SysMenu> currentUserMenu(SysMenu menu) {
         List<String> inIds = this.baseMapper.listMenu(StpUtil.getLoginId().toString()).stream().map(SysMenu::getId).collect(Collectors.toList());
         if (inIds.isEmpty()) {
-            return new ArrayList<>();
+            return ListUtil.empty();
         }
-        List<SysMenu> list = this.getTree(inIds, new Integer[]{2}, menu.getId());
-        return list;
+        return this.getTree(inIds, new Integer[]{2}, menu.getId());
     }
 
     public List<SysMenu> tree(SysMenu menu) {
-        List<SysMenu> list = this.getTree(new ArrayList<>(), null, menu.getId());
-        return list;
+        return this.getTree(ListUtil.empty(), null, menu.getId());
     }
 
     public List<String> listPermissionCode(String userId) {
         List<SysMenu> menuList = this.baseMapper.listMenu(userId);
-        List<String> permissionList = menuList.stream().map(SysMenu::getPermission).filter(i -> StrUtil.isNotBlank(i)).collect(Collectors.toList());
-        return permissionList;
+        return menuList.stream().map(SysMenu::getPermission).filter(StrUtil::isNotBlank).collect(Collectors.toList());
     }
 
     @Transactional(rollbackFor = Exception.class)

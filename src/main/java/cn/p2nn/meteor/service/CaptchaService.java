@@ -49,7 +49,7 @@ public class CaptchaService {
     public boolean valid(String uuid, String code) {
         String open = this.redisService.get(StringUtils.join(CacheConstant.CONFIG_KEY, CacheConstant.OPEN_CAPTCHA_KEY));
         if (!BooleanUtil.toBoolean(open)) {
-            return true;
+            return Boolean.TRUE;
         }
         String cache = this.redisService.get(uuid);
         Assert.notNull(cache, () -> {

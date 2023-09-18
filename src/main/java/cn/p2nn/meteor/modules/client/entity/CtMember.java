@@ -1,63 +1,46 @@
-package cn.p2nn.meteor.entity;
-
-import java.io.Serial;
-import java.time.LocalDateTime;
+package cn.p2nn.meteor.modules.client.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import cn.p2nn.meteor.constants.CommonConstant;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
- * 系统用户
+ * 客户端会员
  *
  * @author huangjiayao1993
  */
 @Data
 @TableName
 @Accessors(chain = true)
-public class SysUser extends BaseEntity {
+public class CtMember implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 3655267182923201138L;
+    private static final long serialVersionUID = 1549380597346494615L;
 
     /**
-     * 用户名
+     * 主键
      */
-    @TableField(exist = false)
-    private String username;
+    @TableId
+    protected String id;
 
     /**
-     * 密码
+     * 微信openid
      */
     @TableField(exist = false)
-    private String password;
-
-    /**
-     * 新密码
-     */
-    @TableField(exist = false)
-    private String newPassword;
-
-    /**
-     * 盐
-     */
-    @TableField(exist = false)
-    private String salt;
+    private String wxOpenid;
 
     /**
      * 账号ID
      */
     private String accountId;
-
-    /**
-     * 组织ID
-     */
-    private String orgId;
 
     /**
      * 昵称
@@ -124,7 +107,4 @@ public class SysUser extends BaseEntity {
      */
     private LocalDateTime loginTime;
 
-    public boolean isAdmin() {
-        return CommonConstant.ADMIN_ID.equals(this.getId());
-    }
 }

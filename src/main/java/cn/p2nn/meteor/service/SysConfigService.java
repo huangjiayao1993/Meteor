@@ -5,8 +5,6 @@ import cn.p2nn.meteor.constants.CacheConstant;
 import cn.p2nn.meteor.entity.SysConfig;
 import cn.p2nn.meteor.mapper.SysConfigMapper;
 import cn.p2nn.meteor.model.PageResult;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.PostConstruct;
@@ -25,7 +23,7 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
     @PostConstruct
     public void init() {
         List<SysConfig> list = this.list();
-        list.stream().forEach(item -> {
+        list.forEach(item -> {
             this.redisService.set(StringUtils.join(CacheConstant.CONFIG_KEY, item.getKey()), item.getValue());
         });
     }
@@ -40,10 +38,10 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
     }
 
     public PageResult page(Page page, SysConfig config) {
-        LambdaQueryWrapper<SysConfig> qw = Wrappers.lambdaQuery(SysConfig.class)
+        page = this.lambdaQuery()
                 .like(StrUtil.isNotBlank(config.getKey()), SysConfig::getKey, config.getKey())
-                .orderByDesc(SysConfig::getId);
-        page = this.page(page, qw);
+                .orderByDesc(SysConfig::getId)
+                .page(page);
         return PageResult.parse(page);
     }
 }

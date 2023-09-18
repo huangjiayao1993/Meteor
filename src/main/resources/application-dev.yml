@@ -1,3 +1,8 @@
+# yaml文件内容加密，正式则使用启动参数传入，-Djasypt.encryptor.password=tNFwPPxxv6#+&SlB
+jasypt:
+  encryptor:
+    password: tNFwPPxxv6#+&SlB
+
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -6,7 +11,7 @@ spring:
     password: 123456
   data:
     redis:
-      database: 10
+      database: 11
       host: 127.0.0.1
       port: 6379
       timeout: 10s
@@ -30,3 +35,12 @@ meteor:
     bucket:
     ak:
     sk:
+
+# 微信相关配置
+wx:
+  # 小程序配置
+  miniapp:
+    #微信小程序的appid
+    appid: 123456
+    #微信小程序的Secret
+    secret: abcdefg

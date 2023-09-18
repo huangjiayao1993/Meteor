@@ -7,8 +7,6 @@ import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.exception.UserException;
 import cn.p2nn.meteor.mapper.SysDictDataMapper;
 import cn.p2nn.meteor.model.PageResult;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -22,27 +20,27 @@ import java.util.List;
 public class SysDictDataService extends ServiceImpl<SysDictDataMapper, SysDictData> {
 
     public PageResult page(Page page, SysDictData data) {
-        LambdaQueryWrapper<SysDictData> qw = Wrappers.lambdaQuery(SysDictData.class)
+        page = this.lambdaQuery()
                 .eq(StrUtil.isNotBlank(data.getType()), SysDictData::getType, data.getType())
-                .like(StrUtil.isNotBlank(data.getName()), SysDictData::getName, data.getName());
-        page = this.page(page, qw);
+                .like(StrUtil.isNotBlank(data.getName()), SysDictData::getName, data.getName())
+                .page(page);
         return PageResult.parse(page);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void create(SysDictData data) {
-        long nameCount = this.count(Wrappers.lambdaQuery(SysDictData.class).eq(SysDictData::getType, data.getType()).eq(SysDictData::getName, data.getName()));
+        long nameCount = this.lambdaQuery().eq(SysDictData::getType, data.getType()).eq(SysDictData::getName, data.getName()).count();
         Assert.isFalse(nameCount > 0, () -> {throw new UserException(ResultEnum.DICT_DATA_NAME_EXISTS);});
-        long valueCount = this.count(Wrappers.lambdaQuery(SysDictData.class).eq(SysDictData::getType, data.getType()).eq(SysDictData::getValue, data.getValue()));
+        long valueCount = this.lambdaQuery().eq(SysDictData::getType, data.getType()).eq(SysDictData::getValue, data.getValue()).count();
         Assert.isFalse(valueCount > 0, () -> {throw new UserException(ResultEnum.DICT_DATA_VALUE_EXISTS);});
         this.save(data);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void update(SysDictData data) {
-        long nameCount = this.count(Wrappers.lambdaQuery(SysDictData.class).eq(SysDictData::getType, data.getType()).eq(SysDictData::getName, data.getName()).notIn(SysDictData::getId, data.getId()));
+        long nameCount = this.lambdaQuery().eq(SysDictData::getType, data.getType()).eq(SysDictData::getName, data.getName()).notIn(SysDictData::getId, data.getId()).count();
         Assert.isFalse(nameCount > 0, () -> {throw new UserException(ResultEnum.DICT_DATA_NAME_EXISTS);});
-        long valueCount = this.count(Wrappers.lambdaQuery(SysDictData.class).eq(SysDictData::getType, data.getType()).eq(SysDictData::getValue, data.getValue()).notIn(SysDictData::getId, data.getId()));
+        long valueCount = this.lambdaQuery().eq(SysDictData::getType, data.getType()).eq(SysDictData::getValue, data.getValue()).notIn(SysDictData::getId, data.getId()).count();
         Assert.isFalse(valueCount > 0, () -> {throw new UserException(ResultEnum.DICT_DATA_VALUE_EXISTS);});
         this.updateById(data);
     }
@@ -53,7 +51,6 @@ public class SysDictDataService extends ServiceImpl<SysDictDataMapper, SysDictDa
     }
 
     public List<SysDictData> listByType(String type) {
-        List<SysDictData> list = this.list(Wrappers.lambdaQuery(SysDictData.class).eq(SysDictData::getType, type));
-        return list;
+        return this.lambdaQuery().eq(SysDictData::getType, type).list();
     }
 }

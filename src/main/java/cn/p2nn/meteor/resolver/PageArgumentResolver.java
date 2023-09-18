@@ -1,20 +1,18 @@
 package cn.p2nn.meteor.resolver;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-
+import cn.hutool.core.map.MapUtil;
+import cn.p2nn.meteor.constants.FieldConstant;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import cn.hutool.core.map.MapUtil;
-import cn.p2nn.meteor.constants.FieldConstant;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Enumeration;
+import java.util.HashMap;
 
 @Slf4j
 public class PageArgumentResolver implements HandlerMethodArgumentResolver {
@@ -35,8 +33,7 @@ public class PageArgumentResolver implements HandlerMethodArgumentResolver {
         }
         Long current = MapUtil.getLong(params, FieldConstant.Fields.current, 1L);
         Long size = MapUtil.getLong(params, FieldConstant.Fields.pageSize, 10L);
-        Page page = new Page(current, size);
-        return page;
+        return new Page<>(current, size);
     }
 
 }

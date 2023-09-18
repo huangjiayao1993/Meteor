@@ -6,9 +6,13 @@ import cn.hutool.core.text.StrPool;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.p2nn.meteor.config.MeteorConfig;
+import cn.p2nn.meteor.dto.JasyptDto;
 import cn.p2nn.meteor.model.Result;
+import cn.p2nn.meteor.utils.JasyptUtil;
 import cn.p2nn.meteor.utils.OssUtil;
 import cn.p2nn.meteor.vo.AppInfoVo;
+import cn.p2nn.meteor.vo.JasyptVo;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +42,17 @@ public class CommonWeb extends BaseWeb {
     public Result appInfo() {
         AppInfoVo vo = new AppInfoVo();
         vo.setVersion(this.config.getVersion());
+        return Result.success(vo);
+    }
+
+    /**
+     * 获取yaml加密内容
+     *
+     * @return
+     */
+    @PostMapping("yaml/jasypt")
+    public Result yamlJasypt(@RequestBody @Valid JasyptDto dto) {
+        JasyptVo vo = new JasyptVo(dto.getContent(), JasyptUtil.encrypt(dto.getContent()));
         return Result.success(vo);
     }
 

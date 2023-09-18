@@ -1,6 +1,5 @@
 package cn.p2nn.meteor.service.oss;
 
-import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -12,6 +11,7 @@ import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.enums.ThirdEnum;
 import cn.p2nn.meteor.exception.OssException;
 import cn.p2nn.meteor.service.RedisService;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * OSS云存储工厂
@@ -59,10 +59,7 @@ public class OssFactory {
         if (StrUtil.isBlank(type)) {
             type = config.getType();
         }
-        ThirdEnum third = EnumUtil.fromStringQuietly(ThirdEnum.class, type);
-        Assert.notNull(third, () -> {
-            throw new OssException(ResultEnum.MISSING_OSS_DEFAULT_ERROR);
-        });
+        ThirdEnum third = EnumUtil.fromStringQuietly(ThirdEnum.class, StringUtils.upperCase(type));
         switch (third) {
             case HUAWEI -> oss = getHuawei();
             case ALI -> oss = getAli();

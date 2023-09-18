@@ -2,15 +2,22 @@ package cn.p2nn.meteor.exception;
 
 import cn.p2nn.meteor.enums.ResultEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serial;
 
 /**
  * 云存储相关异常
  *
  * @author huangjiayao1993
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class OssException extends RuntimeException {
+
+    @Serial
+    private static final long serialVersionUID = 5722422485494191840L;
 
     private int code;
 

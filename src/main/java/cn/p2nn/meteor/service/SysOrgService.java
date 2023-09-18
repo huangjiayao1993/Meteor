@@ -25,13 +25,15 @@ public class SysOrgService extends ServiceImpl<SysOrgMapper, SysOrg> {
     private final SysUserService userService;
 
     public PageResult page(Page page, SysOrg org) {
-        page = this.page(page, Wrappers.lambdaQuery(SysOrg.class).like(StrUtil.isNotBlank(org.getName()), SysOrg::getName, org.getName()).eq(StrUtil.isNotBlank(org.getId()), SysOrg::getPid, org.getId()));
+        page = this.lambdaQuery()
+                .like(StrUtil.isNotBlank(org.getName()), SysOrg::getName, org.getName())
+                .eq(StrUtil.isNotBlank(org.getId()), SysOrg::getPid, org.getId())
+                .page(page);
         return PageResult.parse(page);
     }
 
     public List<SysOrg> tree(SysOrg org) {
-        List<SysOrg> list = this.getTree(org.getId());
-        return list;
+        return this.getTree(org.getId());
     }
 
     List<SysOrg> getTree(String pid) {
@@ -56,7 +58,7 @@ public class SysOrgService extends ServiceImpl<SysOrgMapper, SysOrg> {
 
     @Transactional(rollbackFor = Exception.class)
     public void remove(List<String> ids) {
-        long count = this.userService.count(Wrappers.lambdaQuery(SysUser.class).in(SysUser::getOrgId, ids));
+        long count = this.userService.lambdaQuery().in(SysUser::getOrgId, ids).count();
         Assert.isFalse(count > 0, () -> {throw new BusinessException(ResultEnum.ORG_USER_EXISTS);});
         this.removeBatchByIds(ids);
     }

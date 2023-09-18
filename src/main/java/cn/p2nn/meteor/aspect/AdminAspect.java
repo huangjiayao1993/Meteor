@@ -1,10 +1,5 @@
 package cn.p2nn.meteor.aspect;
 
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.springframework.stereotype.Component;
-
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
 import cn.p2nn.meteor.constants.CommonConstant;
@@ -16,6 +11,10 @@ import cn.p2nn.meteor.enums.ResultEnum;
 import cn.p2nn.meteor.exception.UserException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
 
 /**
  * 管理员操作aop
@@ -50,7 +49,7 @@ public class AdminAspect {
     @Before("execution(* cn.p2nn.meteor.modules.system.web.UserWeb.remove(..))")
     public void removeUserBefore(JoinPoint point) {
         IdsDto dto = (IdsDto) point.getArgs()[0];
-        boolean match = dto.getIds().stream().anyMatch(id -> CommonConstant.ADMIN_ID.equals(id));
+        boolean match = dto.getIds().stream().anyMatch(CommonConstant.ADMIN_ID::equals);
         Assert.isFalse(match, () -> {
             throw new UserException(ResultEnum.NOT_REMOVE_ADMIN);
         });
@@ -78,7 +77,7 @@ public class AdminAspect {
     @Before("execution(* cn.p2nn.meteor.modules.system.web.UserWeb.resetPassword(..))")
     public void resetPasswordUserBefore(JoinPoint point) {
         IdsDto dto = (IdsDto) point.getArgs()[0];
-        boolean match = dto.getIds().stream().anyMatch(id -> CommonConstant.ADMIN_ID.equals(id));
+        boolean match = dto.getIds().stream().anyMatch(CommonConstant.ADMIN_ID::equals);
         boolean updateAdminUser = !CommonConstant.ADMIN_ID.equals(StpUtil.getLoginId()) && match;
         Assert.isFalse(updateAdminUser, () -> {
             throw new UserException(ResultEnum.NOT_ADMIN_OPERATE);
@@ -135,7 +134,7 @@ public class AdminAspect {
     @Before("execution(* cn.p2nn.meteor.modules.system.web.RoleWeb.remove(..))")
     public void removeRoleBefore(JoinPoint point) {
         IdsDto dto = (IdsDto) point.getArgs()[0];
-        boolean match = dto.getIds().stream().anyMatch(id -> CommonConstant.ADMIN_ROLE_ID.equals(id));
+        boolean match = dto.getIds().stream().anyMatch(CommonConstant.ADMIN_ROLE_ID::equals);
         Assert.isFalse(match, () -> {
             throw new UserException(ResultEnum.NOT_REMOVE_ADMIN_ROLE);
         });

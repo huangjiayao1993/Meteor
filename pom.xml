@@ -11,7 +11,7 @@
 
     <groupId>cn.p2nn</groupId>
     <artifactId>meteor</artifactId>
-    <version>1.8.1</version>
+    <version>1.9.0</version>
     <name>meteor</name>
     <description>meteor</description>
 
@@ -20,10 +20,12 @@
         <lombok.version>1.18.28</lombok.version>
         <hutool.version>5.8.21</hutool.version>
         <sa-token.version>1.35.0.RC</sa-token.version>
+        <jasypt.version>3.0.5</jasypt.version>
         <mysql-connector.version>8.0.33</mysql-connector.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <huawei-obs.version>3.22.3</huawei-obs.version>
         <qiniu-kodo.version>7.12.1</qiniu-kodo.version>
+        <weixin-java.version>4.5.0</weixin-java.version>
     </properties>
 
     <dependencies>
@@ -62,6 +64,7 @@
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
         </dependency>
+        <!-- SaToken相关 -->
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-spring-boot3-starter</artifactId>
@@ -77,6 +80,13 @@
             <artifactId>sa-token-alone-redis</artifactId>
             <version>${sa-token.version}</version>
         </dependency>
+        <!-- YAML文件加密 -->
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>${jasypt.version}</version>
+        </dependency>
+        <!-- MySQL相关 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jdbc</artifactId>
@@ -102,6 +112,18 @@
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
             <version>${qiniu-kodo.version}</version>
+        </dependency>
+        <!-- 微信小程序(非官方)第三方依赖 -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+            <version>${weixin-java.version}</version>
+        </dependency>
+        <!-- 微信支付(非官方)第三方依赖 -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-pay</artifactId>
+            <version>${weixin-java.version}</version>
         </dependency>
     </dependencies>
 

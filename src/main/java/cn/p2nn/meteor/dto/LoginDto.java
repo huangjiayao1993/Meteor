@@ -12,7 +12,7 @@ public class LoginDto {
     @NotBlank(message = "密码不能为空")
     private String password;
 
-    @NotBlank(message = "登录方式不能为空")
+//    @NotBlank(message = "登录方式不能为空")
     private String loginType;
 
     @NotBlank(message = "验证码ID不能为空")
